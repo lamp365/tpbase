@@ -34,7 +34,7 @@ class PublicController extends Controller
      * 操作  success('操作成功','url',3000)  等待3秒 直接跳转到url
      * @time 2015-15-05
      **/
-    public function success($message = '操作成功！', $url = 1000,$time = 1000)
+    public function success($message = '操作成功！', $url = 2000,$time = 2000)
     {
         if(is_numeric($url)){
             $time = $url;
@@ -45,6 +45,7 @@ class PublicController extends Controller
         $this->assign('url',$url);
         $this->assign('time',$time);
         $this->display('public/status');
+        die();
     }
 
     /**
@@ -58,7 +59,7 @@ class PublicController extends Controller
      * 操作  error('操作失败','url')  直接跳转到url
      * 操作  error('操作失败','url',2000)  等待2秒 直接跳转到url
      **/
-    public function error($message = '操作失败！',$url = 1000,$time = 1000)
+    public function error($message = '操作失败！',$url = 2000,$time = 2000)
     {
         if(is_numeric($url)){
             $time = $url;
@@ -69,6 +70,7 @@ class PublicController extends Controller
         $this->assign('url',$url);
         $this->assign('time',$time);
         $this->display('public/status');
+        die();
     }
 
 
@@ -79,7 +81,7 @@ class PublicController extends Controller
      **/
     public function login()
     {
-//        if(session(C('ADMIN_UID'))) $this->redirect(C('DEFAULTS_MODULE').'/Index/index');
+//        if(session(C('ADMIN_UID'))) $this->redirect('Admin/Index/index');
         $this->display();
     }
 
@@ -94,17 +96,8 @@ class PublicController extends Controller
         $data = $model->login();
         if ($data) {
             //登陆后获取所属分组的id
-            $str = self::_rules();
-            //查询默认跳转地
-            $where = array(
-                'id'     => array('in', $str),
-                'level'  => 0,
-                'status' => 1
-            );
-			//调用getOneField方法传参格式getOneField('字段','条件（数组）','指定条数或者true如果只查询一条就为空','排序方式')
-            
-            $url = D('AuthCate')->where($where)->order('sort DESC')->getField('module');
-            $this->success('登录成功', U($url . '/Index/index'));
+//            $str = self::_rules();
+            $this->success('登录成功', getU('Admin/index'));
         }
         $this->error($model->getError());
     }
@@ -126,7 +119,7 @@ class PublicController extends Controller
     public function logout()
     {
         session(C('ADMIN_UID'), null);
-        $this->redirect(C('DEFAULTS_MODULE') . '/Public/login');
+        $this->redirect('Admin/Public/login');
     }
     /**
      * updatepwd 修改密码操作

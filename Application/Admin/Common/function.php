@@ -1,6 +1,6 @@
 <?php
     /**
-     * @author 普修米洛斯 www.php63.cc
+     * @author kevin.liu www.dayblog.cn
      * @param int $width 宽度
      * @param int $height 高度
      * @param int $font_size 字体大小
@@ -41,7 +41,7 @@
  * checkcode 检测验证码方法
  * @param string $code 传入的验证码
  * @param string $verifyName session里面的key值
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2014-12-5
  **/
 function checkcode($code,$verifyName='code'){
@@ -68,7 +68,7 @@ function letterChange($str,$type=1)
  * 创建model
  * @param string $module model所属模块
  * @param string $model model名字
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2016-01-24
  **/
 function createModel($module,$model)
@@ -107,7 +107,7 @@ function createModel($module,$model)
 /**
  * 创建表
  * @param string $tablename 表名
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2016-01-26
  **/
 function createMysqlTable($tablename='test')
@@ -144,3 +144,36 @@ function createMysqlTable($tablename='test')
     print_r(implode(' ', $dataArr));
 }
 
+/**
+ * 打印数组 程序还会往下执行
+ * 可打印任何数据 可支持连写
+ * pp($data,$obj,$aa);
+ */
+function pp(){
+    $arr = func_get_args();
+    echo "<pre>";
+    foreach($arr as $one){
+        print_r($one);
+        echo '<br/>';
+    }
+    echo "</pre>";
+}
+/**
+ * 打印数组 程序会终止，不往下执行
+ * 可打印任何数据 可支持连写
+ * pp($data,$obj,$aa);
+ */
+function ppd(){
+    $arr = func_get_args();
+    echo "<pre>";
+    foreach($arr as $one){
+        print_r($one);
+        echo '<br/>';
+    }
+    echo "</pre>";
+    die();
+}
+
+function getU($url){
+    return C('WEB_DOMAIN').U($url);
+}
