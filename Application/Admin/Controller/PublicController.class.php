@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | 基于Thinkphp3.2.3开发的一款权限管理系统
 // +----------------------------------------------------------------------
-// | Copyright (c) www.php63.cc All rights reserved.
+// | Copyright (c) www.dayblog.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -20,7 +20,7 @@ class PublicController extends Controller
 	 **/
 	public function skip(){
 		session(C('ADMIN_UID'), null);
-		$this->redirect(C('DEFAULTS_MODULE') . '/Public/login');
+		$this->redirect('Public/login');
 	}
     /**
      * success 执行成功返回json格式
@@ -44,7 +44,7 @@ class PublicController extends Controller
         $this->assign('message',$message);
         $this->assign('url',$url);
         $this->assign('time',$time);
-        $this->display('public/status');
+        $this->display('Public/status');
         die();
     }
 
@@ -69,7 +69,7 @@ class PublicController extends Controller
         $this->assign('message',$message);
         $this->assign('url',$url);
         $this->assign('time',$time);
-        $this->display('public/status');
+        $this->display('Public/status');
         die();
     }
 
@@ -81,7 +81,7 @@ class PublicController extends Controller
      **/
     public function login()
     {
-//        if(session(C('ADMIN_UID'))) $this->redirect('Admin/Index/index');
+        if(session(C('ADMIN_UID'))) $this->redirect('Index/index');
         $this->display();
     }
 
@@ -97,7 +97,7 @@ class PublicController extends Controller
         if ($data) {
             //登陆后获取所属分组的id
 //            $str = self::_rules();
-            $this->success('登录成功', getU('Admin/index'));
+            $this->success('登录成功', getU('index'));
         }
         $this->error($model->getError());
     }
@@ -113,13 +113,13 @@ class PublicController extends Controller
     }
     /**
      * logout 退出登录
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-06-05
      **/
     public function logout()
     {
         session(C('ADMIN_UID'), null);
-        $this->redirect('Admin/Public/login');
+        $this->redirect(getU('Public/login'));
     }
     /**
      * updatepwd 修改密码操作
@@ -191,7 +191,7 @@ class PublicController extends Controller
 
     /**
      * 分组权限查询
-     * @author kevin.liu www.php63.cc
+     * @author kevin.liu www.dayblog.cn
      * @return array $str 返回查询到的权限
      **/
     protected function _rules()

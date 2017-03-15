@@ -143,37 +143,3 @@ function createMysqlTable($tablename='test')
     echo '<pre>';
     print_r(implode(' ', $dataArr));
 }
-
-/**
- * 打印数组 程序还会往下执行
- * 可打印任何数据 可支持连写
- * pp($data,$obj,$aa);
- */
-function pp(){
-    $arr = func_get_args();
-    echo "<pre>";
-    foreach($arr as $one){
-        print_r($one);
-        echo '<br/>';
-    }
-    echo "</pre>";
-}
-/**
- * 打印数组 程序会终止，不往下执行
- * 可打印任何数据 可支持连写
- * pp($data,$obj,$aa);
- */
-function ppd(){
-    $arr = func_get_args();
-    echo "<pre>";
-    foreach($arr as $one){
-        print_r($one);
-        echo '<br/>';
-    }
-    echo "</pre>";
-    die();
-}
-
-function getU($url){
-    return C('WEB_DOMAIN').U($url);
-}

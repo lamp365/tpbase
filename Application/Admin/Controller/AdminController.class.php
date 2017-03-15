@@ -2,18 +2,18 @@
 // +----------------------------------------------------------------------
 // | 后台管理员,系统分组,权限分配
 // +----------------------------------------------------------------------
-// | Copyright (c) www.php63.cc All rights reserved.
+// | Copyright (c) www.dayblog.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: 普罗米修斯 <996674366@qq.com>
+// | Author: kevin.liu <791845283@qq.com>
 // +----------------------------------------------------------------------
 namespace Admin\Controller;
 class AdminController extends PrivateController
 {
     /**
      * uesr 后台管理员列表
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-05
      **/
     public function user()
@@ -106,7 +106,7 @@ class AdminController extends PrivateController
 
     /**
      * group 后台用户分组
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-05
      **/
 
@@ -134,7 +134,7 @@ class AdminController extends PrivateController
 
     /**
      * 权限规则列表
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-09
      */
     public function auth()
@@ -145,7 +145,7 @@ class AdminController extends PrivateController
     /******************以下为操作方法**************/
     /**
      * group 后台用户分组添加编辑
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-05
      **/
     public function groupedit()
@@ -167,7 +167,7 @@ class AdminController extends PrivateController
 
     /**
      * authinfo 显示权限分类信息
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-8
      **/
     public function authinfo()
@@ -196,7 +196,7 @@ class AdminController extends PrivateController
 
     /**
      * group 后台用户分组添加编辑
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-05
      **/
     public function useredit()
@@ -228,7 +228,7 @@ class AdminController extends PrivateController
 
     /**
      * group 后台用户分组删除操作
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-05
      **/
     public function groupdel()
@@ -239,7 +239,7 @@ class AdminController extends PrivateController
 
     /**
      * 权限添加编辑
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-09
      */
     public function authedit()
@@ -271,7 +271,7 @@ class AdminController extends PrivateController
 
     /**
      * groupauth 显示权限分组的权限
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-08-11
      **/
     public function groupauth()
@@ -307,7 +307,7 @@ class AdminController extends PrivateController
 
     /**
      * savegroupauth 分配权限
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-08-11
      **/
     public function savegroupauth()
@@ -330,7 +330,7 @@ class AdminController extends PrivateController
 
     /**
      * 删除权限
-     * @author 刘中胜
+     * @author kevin.liu
      * @time 2015-12-08
      */
     public function authdel()
@@ -341,7 +341,7 @@ class AdminController extends PrivateController
 
     /*
      * 删除管理员
-     * @author 普修米洛斯
+     * @author kevin.liu
      * @time 2015-12-08
      */
     public function adminuserdel()

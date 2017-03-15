@@ -1,7 +1,7 @@
 <?php
 /**
  * randNum 生成随机数
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2015-08-14
  **/
 function randNum(){
@@ -12,7 +12,7 @@ function randNum(){
  * md5Encrypt 加密函数
  * @param string $str 要加密的字符串
  * @return string $chars 加密后的字符串
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2015-04-13
  **/
 function md5Encrypt($str='',$rand=''){
@@ -23,7 +23,7 @@ function md5Encrypt($str='',$rand=''){
 /**
  * 删除缓存文件
  * @param string $dir 默认temp目录
- * @author 刘中胜
+ * @author kevin.liu
  **/
 function delTemp($dir = TEMP_PATH){
     $dh = opendir($dir);
@@ -48,7 +48,7 @@ function delTemp($dir = TEMP_PATH){
 /**
  * 将key相同的数组合并为新的数组
  * @param array $arr 接收要组装的二维数组
- * @author 刘中胜
+ * @author kevin.liu
  **/
 function arrAssembly($arr)
 {
@@ -66,7 +66,7 @@ function arrAssembly($arr)
  * @param mixed $date 传入要格式化的时间
  * @param int $type 1：年月日时分秒如：2015-12-07 0:22:12
  * @return mixed 处理好的时间
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2015-12-07
  **/
 function formatTime($date, $type=1)
@@ -88,7 +88,7 @@ function formatTime($date, $type=1)
 
 /**
  * 切割图片
- * @author 刘中胜
+ * @author kevin.liu
  * @trim 2015-05-22
  **/
 function getThumb($url='', $width=null, $height=null){
@@ -110,7 +110,7 @@ function getThumb($url='', $width=null, $height=null){
  * cut_str 字符串截取
  * @param string $sourcestr 要截取的内容
  * @param string $cutlength 指定长度
- * @author 刘中胜
+ * @author kevin.liu
  * @time 2015-5-19
  **/
 function cut_str($sourcestr,$cutlength){
@@ -147,7 +147,7 @@ function cut_str($sourcestr,$cutlength){
 }
 /**
  * 生成随机字符串
- * @author 普修米洛斯
+ * @author kevin.liu
  **/
 function getRandStr($length=8) {
     $str = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -204,7 +204,7 @@ function homeUserPwd($str)
 }
 
 /**
- * @author 普修米洛斯 www.php63.cc
+ * @author kevin.liu www.dayblog.cn
  * @param $file 缓存文件名
  * @param int $time 缓存时间
  */
@@ -219,9 +219,55 @@ function check_cache($file, $time = 0){
 }
 
 /**
- * @author 普修米洛斯 www.php63.cc
+ * @author kevin.liu www.dayblog.cn
  * @param $file 生成静态页面
  */
 function create_cache($file){
     file_put_contents($file,ob_get_contents());
+}
+
+
+/**
+ * 打印数组 程序还会往下执行
+ * 可打印任何数据 可支持连写
+ * pp($data,$obj,$aa);
+ */
+function pp(){
+    $arr = func_get_args();
+    echo "<pre>";
+    foreach($arr as $one){
+        print_r($one);
+        echo '<br/>';
+    }
+    echo "</pre>";
+}
+/**
+ * 打印数组 程序会终止，不往下执行
+ * 可打印任何数据 可支持连写
+ * pp($data,$obj,$aa);
+ */
+function ppd(){
+    $arr = func_get_args();
+    echo "<pre>";
+    foreach($arr as $one){
+        print_r($one);
+        echo '<br/>';
+    }
+    echo "</pre>";
+    die();
+}
+
+/**
+ * @param $url
+ * @return string 返回一个绝对地址
+ * getU('edit')   当前控制器下的edit
+ * getU('User/edit')   当前model下 User控制器下的edit
+ * getU('Home/User/edit')   当前Home模块下 User控制器下的edit
+ */
+function getU($url){
+    $url_arr = explode('/',$url);
+    if(count($url_arr) == 2){
+        $url = MODULE_NAME."/".$url;
+    }
+    return C('WEB_DOMAIN').U($url);
 }
