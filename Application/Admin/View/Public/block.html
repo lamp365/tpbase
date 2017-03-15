@@ -1,0 +1,32 @@
+    <!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <include file="Admin@Public:top"/>
+    <title>标题</title>
+</head>
+<body>
+    <!-- 头部 -->
+    <include file="Admin@Public:header"/>
+    <div class="body">
+        <div class="inner clearfix">
+            <div class="col_side">
+               <include file="Admin@Public:left"/>
+            </div>
+            <div class="col_main">
+                <div class="main_hd">
+                    <h2>列表标题</h2>
+                    <div class="title_tab">
+                        <ul class="tab_ul dib-wrap">
+                            <volist name="top_menu_url" id="vo">
+                                <li class='dib <in name="Think.ACTION_NAME" value="$vo['method']">selected</in>'><a href="{:U($vo['method'])}">{$vo.title}</a>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+ 
+                <block name="body"></block>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

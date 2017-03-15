@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="__API__/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="__API__/css/style.css"/>
+</head>
+<body>
+
+<div class="wrapper">
+
+
+    <!--start left-->
+    <div class="left fl">
+
+
+        <!--start dropdown-->
+        <div class="dropdown">
+            <div class="drop-txt bg-white radius">
+                <span>请选择接口</span>
+                <i class="sprite"></i>
+            </div>
+            <ul class="drop-list">
+                <li data-id="1" data-value="1-发送验证码">1-发送验证码</li>
+            </ul>
+        </div>
+        <!--end dropdown-->
+
+        <!--start form-wrap-->
+        <div class="form-wrap">
+
+            <form action="" method="post" onsubmit="return ajaxPost(this);" class="ajax_from">
+                <input type="hidden" id="webdomain" value="{:C('WEB_DOMAIN')}"/>
+                <div class="form-control mt20 mb20">
+                    <div class="form-cols radius bg-white fl">
+                        <label>版本号</label>
+                        <div class="form-txt">
+                            <input type="text" name="apiversion" value="v.1.0"/>
+                        </div>
+
+                    </div>
+                    <div class="form-cols radius bg-white fr">
+                        <label>加密参数</label>
+                        <div class="form-txt">
+                            <input type="text" name="safecode" value="php63.cc"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-container radius">
+
+
+                    <div class="module-title">
+                        <i class="sprite icon-1"></i>
+                        <h2>当前接口参数</h2>
+                    </div>
+
+                    <div class="form-content bg-white" data-ele="formHtml">
+
+                    </div>
+
+                </div>
+
+
+                <div class="buttons">
+                    <input type="submit" class="button button-default radius" value="提交"/>
+                    <input type="submit" class="button radius"  value="更新日记"/>
+                </div>
+            </form>
+
+        </div>
+        <!--end form-wrap-->
+
+    </div>
+    <!--end left-->
+
+    <!--end right-->
+    <div class="right fr">
+
+        <div class="form-content">
+            <div class="form-control radius">
+                <div class="form-cols">
+                    <label><i class="sprite icon-2"></i>请求地址</label>
+                    <div class="form-txt">
+                        <input type="text" data-ele="getLinkAddress" disabled value=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="module-wrap radius mt20">
+            <div class="module-title">
+                <i class="sprite icon-3"></i>
+                <h2>返回值</h2>
+            </div>
+            <div class="json-code bg-white">
+                <div class="json-result">
+                </div>
+            </div>
+        </div>
+
+        <div class="module-wrap radius mt20">
+            <div class="module-title">
+                <i class="sprite icon-3"></i>
+                <h2>返回说明</h2>
+            </div>
+            <div class="data-explain bg-white">
+                <div class="data-table">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end right-->
+
+</div>
+
+<script type="text/javascript" src="__API__/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="__API__/js/jquery.json.js"></script>
+<script type="text/javascript" src="__API__/js/api.js"></script>
+<script type="text/javascript" src="__API__/js/app.js"></script>
+
+</body>
+</html>

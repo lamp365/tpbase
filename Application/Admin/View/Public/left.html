@@ -1,0 +1,28 @@
+<?php
+$name = CONTROLLER_NAME;
+?>
+<div class="menu_box">
+    <dl class="menu first">
+        <dt class="menu_title">
+            <i class="icon_menu"><img src="__ADMINSTYLE__/Images/icon_menu_function.png"/></i>平台信息
+        </dt>
+        <dd class='menu_item <eq name="Think.CONTROLLER_NAME" value="Index">active</eq>'>
+            <a href="{:U('Index/index')}">站点首页</a>
+        </dd>
+    </dl>
+    <dl class="menu">
+        <dt class="menu_title">
+            <i class="icon_menu"><img src="__ADMINSTYLE__/Images/icon_menu_management.png"/></i>内容管理
+        </dt>
+
+        <volist name="menu_url" id="vo">
+            <?php
+            $url = explode('/', $vo['name']);
+            $cname = $url[2];
+        ?>
+            <dd class='menu_item <eq name="cname" value="$name">active</eq>'>
+                <a href="{:$vo['name']}">{$vo.title}</a>
+            </dd>
+        </volist>
+    </dl>
+</div>

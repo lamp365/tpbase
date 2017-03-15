@@ -1,0 +1,55 @@
+<html>
+<head>
+    <title>操作信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="__LIBS__/beAlert/css/beAlert.css">
+    <script src="__SYSTEM__/js/jquery.js"></script>
+    <script src="__LIBS__/beAlert/js/beAlert.js"></script>
+</head>
+<body>
+
+<script>
+    var msg  = "{$message}";
+    var time = "{$time}";
+    time = time/1000;
+    var url  = "{$url}";
+    var code = "{$code}";
+    var tit  = "即将跳转:<span>"+time+"</span> s";
+    function goUrl(url){
+        if(url){
+            window.location.href = url;
+        }else{
+            window.history.back();
+        }
+    }
+
+    $(function(){
+        if(code == 200){
+            alert(msg,tit,function(){
+                goUrl(url);
+            },{type: 'success'});
+        }else{
+            alert(msg,tit,function(){
+                goUrl(url);
+            });
+        }
+
+        var interval = setInterval(function(){
+            var obj = $(".BeAlert_box");
+            if(obj.length < 1){
+                goUrl(url);
+            }
+            time = parseInt(time) -1;
+            $(".BeAlert_message span").html(time);
+            if(time <= 0) {
+                goUrl(url);
+                clearInterval(interval);
+            }
+        }, 1000);
+    });
+
+</script>
+</body>
+</html>
+

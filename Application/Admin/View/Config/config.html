@@ -1,0 +1,35 @@
+<extend name="Admin@Public:block" />
+<block name="body">
+    <div class="main_bd">
+        <div class="main_bd_top clearfix">
+            <ul class="tab_caozuo dib-wrap">
+                <li class="dib">
+                    <switch name="editTag.type">
+                        <case value="1">
+                            <a href="JavaScript:;" target="popDialog" data-opt="{$editTag['data-opt']}">{$editTag['content']}
+                            </a></case>
+                        <case value="2">
+                            <a href="{$editTag['href']}">{$editTag['content']}</a>
+                        </case>
+                    </switch>
+                </li>
+            </ul>
+        </div>
+        <form action="" method="post" onsubmit="return Juuz.ajaxForm(this);">
+        <div class="ui_col_6 mt20">
+            <input data-opt='{
+            fileType: "img",
+            width: "200,750",
+            height: "355,1334",
+            name: "登陆封面图上传",
+            title: "缩略图",
+            thumb: ""}' type="hidden" class="js_hidden_file" name="login_img" value="{$info['login_img']}" />
+        </div>
+        <div class="ui_col_24" style="text-align:center; padding:10px 0;">
+            <button type="submit" class="ui_button medium">保 存</button>
+            <a href="javascript:history.go(-1);" class="ui_button medium">返 回</a>
+        </div>
+        </form>
+    </div>
+
+</block>

@@ -1,0 +1,46 @@
+<extend name="Admin@Public:block" />
+<block name="body">
+                <div class="main_bd">
+                    <div class="main_bd_top clearfix">
+                        <div class="search_condition">
+                            <form id="searchForm" action="" method="post" onsubmit="return Manage.updateListData(this);">
+                                <input type="hidden" name="currentPage" value="1" />
+                                <input type="hidden" name="pageNum" value="10" />
+                                <include file="search"/>
+                             </form>
+                        </div>
+                        <ul class="tab_caozuo dib-wrap">
+    						<volist name="editTag" id="vo">
+                                <li class="dib">
+    								<a href="{$vo.href}" target="{$vo.target}" data-opt="{$vo['dataopt']['data-opt']}">{$vo['dataopt']['content']}</a>
+                                </li>
+    						</volist>
+                        </ul>
+                    </div>
+                    <div class="ui_list_wrap">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).off('click').on("click",function(e){
+        var menuObj = $('.list_tools_menu');
+        var target = $(e.target);
+        if(target.closest(".js_list_tools").length == 0){
+            $('#listToolsWrap').html('').hide();
+        }
+    });
+
+    var listJson = {$list};
+
+    $(function(){
+        var listTable = Manage.listTemp(listJson);
+        var listWrap = $('.ui_list_wrap');
+        listWrap.html(listTable);
+        Manage.uiInit(listWrap);
+    });
+    </script>
+</block>
