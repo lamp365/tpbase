@@ -56,7 +56,7 @@ function checkMenuIsOn($url,$type = 'left'){
         }
     }
     if($type == 'top'){
-        if($url == CONTROLLER_NAME){
+        if($url == MODULE_NAME){
             return true;
         }
     }

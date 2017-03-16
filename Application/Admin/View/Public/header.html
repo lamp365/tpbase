@@ -10,17 +10,59 @@
             </span>
             <ul class="nav nav-inline admin-nav">
                 <volist name="web_top_menu_url" id="vo">
-                    <li <?php if(checkMenuIsOn($vo['controller'],'top')){ echo "class='active'";} ?>>
-                        <a href="{$vo.url}" class="icon-home">{$vo.title}</a>
+                    <li <?php if(checkMenuIsOn($vo['module'],'top')){ echo "class='active'";} ?>>
+                        <a href="javascript:;" class="icon-home">{$vo.title}</a>
                         <ul>
-                            <volist name="menu_url" id="son_vo">
-                                <?php
-                                    $url = explode('/', $son_vo['name']);
-                                    $cname = $url[2];
-                                ?>
-                            <li <?php if(checkMenuIsOn($son_vo['name'])){ echo "class='active'";} ?>><a href="{:$son_vo['name']}">{$son_vo.title}</a></li>
 
-                            </volist>
+                            <li class="active">
+                                <a href="#">网站设置</a>
+                                <span class="icon-angle-double-down"></span>
+                            </li>
+
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试一下</span>
+                                </a>
+                            </ol>
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试2下</span>
+                                </a>
+                            </ol>
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试3下</span>
+                                </a>
+                            </ol>
+
+                            <li class="active">
+                                <a href="#">微信设置</a>
+                                <span class="icon-angle-double-down"></span>
+                            </li>
+
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试一下</span>
+                                </a>
+                            </ol>
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试2下</span>
+                                </a>
+                            </ol>
+                            <ol class="li_son">
+                                <a href="#">
+                                    <span class="icon-angle-double-right"></span>
+                                    <span>测试3下</span>
+                                </a>
+                            </ol>
+
+
                         </ul>
                     </li>
                 </volist>
@@ -35,3 +77,21 @@
         </div>
     </div>
 </div>
+<script>
+    $(".admin-nav>li").click(function(){
+        $(".admin-nav>li").removeClass('active');
+        $(this).addClass('active');
+        $(".admin-nav li").each(function(){
+            $(this).find('ul').hide();
+        });
+        $(this).find('ul').show();
+    })
+    $(".admin-nav ul ol").mouseover(function(){
+        $(this).find("span").eq(0).show();
+        $(this).find("span").eq(1).css('margin-left','0');
+    })
+    $(".admin-nav ul ol").mouseout(function(){
+        $(this).find("span").eq(0).hide();
+        $(this).find("span").eq(1).css('margin-left','12px');
+    })
+</script>
