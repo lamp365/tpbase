@@ -42,14 +42,26 @@
  * @param string $code 传入的验证码
  * @param string $verifyName session里面的key值
  * @author kevin.liu
- * @time 2014-12-5
  **/
 function checkcode($code,$verifyName='code'){
     $str =strtolower($code);
     return session($verifyName) == MD5($str);
 }
 
-
+function checkMenuIsOn($url,$type = 'left'){
+    $curent = MODULE_NAME.'/'. CONTROLLER_NAME . '/' . ACTION_NAME;
+    if($type == 'left'){
+        if($url == $curent){
+            return true;
+        }
+    }
+    if($type == 'top'){
+        if($url == CONTROLLER_NAME){
+            return true;
+        }
+    }
+    return false;
+}
 /**
  * 大小写转换
  * @param string $str 要转换的字符串

@@ -1,23 +1,37 @@
-<div class="heade" id="header">
-    <div class="head_box">
-        <h1 class="logo">
-            <a href="#" title="Juuz"><img src="__ADMINSTYLE__/Images/logo_header.png" /></a>
-        </h1>
-        <div class="account">
-            <span class="account_bg_left"></span>
-            <span class="account_bg_right"></span>
-            <span class="account_welcom">当前用户：<strong>{$UserName}</strong></span>
-            <a href="javascript:void(0);" class="account_update" target="popDialog" data-opt="{
-                title: '修改密码',
-                url: '{:U("Admin/Public/resetpwd")}',
-                dataType: 'html'
-            }">修改密码</a>
-            <a href="{:U('Admin/Public/logout')}" class="account_logout">安全退出</a>
+<div class="lefter">
+    <div class="logo"><a href="#" target="_blank"><img src="__SYSTEM__/images/logo.png" alt="后台管理系统" /></a></div>
+</div>
+<div class="righter nav-navicon" id="admin-nav">
+    <div class="mainer">
+        <div class="admin-navbar">
+            <span class="float-right">
+            	<a class="button button-little bg-main" href="{:C('WEB_DOMAIN')}" target="_blank">前台首页</a>
+                <a class="button button-little bg-yellow" href="{:getU('logout')}">注销登录</a>
+            </span>
+            <ul class="nav nav-inline admin-nav">
+                <volist name="web_top_menu_url" id="vo">
+                    <li <?php if(checkMenuIsOn($vo['controller'],'top')){ echo "class='active'";} ?>>
+                        <a href="{$vo.url}" class="icon-home">{$vo.title}</a>
+                        <ul>
+                            <volist name="menu_url" id="son_vo">
+                                <?php
+                                    $url = explode('/', $son_vo['name']);
+                                    $cname = $url[2];
+                                ?>
+                            <li <?php if(checkMenuIsOn($son_vo['name'])){ echo "class='active'";} ?>><a href="{:$son_vo['name']}">{$son_vo.title}</a></li>
+
+                            </volist>
+                        </ul>
+                    </li>
+                </volist>
+            </ul>
         </div>
-        <div class="head_menu">
-            <volist name="web_top_menu_url" id="vo">
-                <a href="{$vo.url}" <eq name="Think.MODULE_NAME" value="$vo['module']">class='selected'</eq>>{$vo.title}</a>
-            </volist>
+        <div class="admin-bread">
+            <span>您好，{$UserName}，欢迎您的光临。</span>
+            <ul class="bread">
+                <li><a href="{:getU('Index/index')}" class="icon-home"> 开始</a></li>
+                <li>后台首页</li>
+            </ul>
         </div>
     </div>
 </div>

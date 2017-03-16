@@ -97,7 +97,7 @@ class PublicController extends Controller
         if ($data) {
             //登陆后获取所属分组的id
 //            $str = self::_rules();
-            $this->success('登录成功', getU('index'));
+            $this->success('登录成功', getU('Index/index'));
         }
         $this->error($model->getError());
     }

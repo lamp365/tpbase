@@ -74,7 +74,7 @@ class PrivateController extends PublicController
      * @param string $url 要跳转的地址
      * @param int $typeid 0 为直接跳转 1为返回数组
      * @return boolean
-     * @author kevin.liu<www.dayblog.cn>  <996674366@qq.com>
+     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
     protected function _modelAdd($url = '', $typeid = 0)
     {
@@ -94,7 +94,7 @@ class PrivateController extends PublicController
      * @param array $where 查询的条件
      * @param int $type 类型 :type =1 分页用 type=2普通查询
      * @return mixed
-     * @author kevin.liu<www.dayblog.cn>  <996674366@qq.com>
+     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
     protected function _modelCount($where = array(), $type = 1, $num = '')
     {
@@ -117,7 +117,7 @@ class PrivateController extends PublicController
      * @param string $order 排序方式
      * @param string $field 要显示的字段
      * @return array
-     * @author kevin.liu<www.dayblog.cn>  <996674366@qq.com>
+     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
     protected function _modelSelect($where, $order, $field = "*", $limit = '')
     {
@@ -133,7 +133,7 @@ class PrivateController extends PublicController
      * @param string $url 跳转地址
      * @param int $type 如果为1则表示删除后还有其他操作
      * @return string 返回执行结果
-     * @author kevin.liu<www.dayblog.cn>  <996674366@qq.com>
+     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
     protected function _del($url)
     {
@@ -155,7 +155,7 @@ class PrivateController extends PublicController
      * @param $max 是否查询最大的排序字段
      * @param int $type 默认为1：分配到模板 ，其他返回
      * @return mixed
-     * @author kevin.liu<www.dayblog.cn>  <996674366@qq.com>
+     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
     protected function _oneInquire($where, $type = 1)
     {
@@ -207,7 +207,6 @@ class PrivateController extends PublicController
      * @param string $url 跳转地址
      * @param int $type 跳转类型: 1为弹出层 2为新窗口打开
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-15-05
      **/
     protected function isBut($but = array())
     {
@@ -248,7 +247,6 @@ class PrivateController extends PublicController
      * @param string $url 跳转地址
      * @param int $type 跳转类型: 1为添加 2为其他
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-15-05
      **/
     protected function _catebut($url, $title, $id = 0, $msg = '', $type = 1)
     {
@@ -283,7 +281,6 @@ class PrivateController extends PublicController
      * @param int $num 展示条数
      * @return array 返回组装好的结果
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-15-05
      **/
     protected function _page($count, $num)
     {
@@ -312,7 +309,6 @@ class PrivateController extends PublicController
     /**
      * 左边菜单
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-12-11
      **/
     public function _left_menu()
     {
@@ -351,7 +347,6 @@ class PrivateController extends PublicController
     /**
      * 列表上方菜单
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-12-11
      **/
     public function _top_menu()
     {
@@ -386,7 +381,6 @@ class PrivateController extends PublicController
     /**
      * 网站顶部菜单
      * @author kevin.liu<www.dayblog.cn>
-     * @time 2015-12-11
      **/
     public function _web_top_menu()
     {
