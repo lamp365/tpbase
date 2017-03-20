@@ -9,9 +9,9 @@
                 <a class="button button-little bg-yellow" href="{:getU('logout')}">注销登录</a>
             </span>
             <ul class="nav nav-inline admin-nav">
-                <volist name="web_top_menu_url" id="vo">
-                    <li <?php if(checkMenuIsOn($vo['controller'],'top')){ echo "class='active'";} ?>>
-                        <a href="{$vo.url}" class="icon-home">{$vo.title}</a>
+                <volist name="top_menu_url" id="vo">
+                    <li class="one_li">
+                        <a href="javascript:;" onclick="getLeftMenu(this)" class="{$vo.icon}">{$vo.name}</a>
                         <ul>
                             <volist name="menu_url" id="son_vo">
                                 <?php
@@ -35,3 +35,12 @@
         </div>
     </div>
 </div>
+<script>
+    function getLeftMenu(obj){
+        $(obj).closest('.admin-nav').find('.one_li').removeClass('active');
+        $(obj).parent().addClass('active');
+    }
+    $(function(){
+        $(".admin-nav").find(".one_li").eq(0).addClass('active');
+    })
+</script>

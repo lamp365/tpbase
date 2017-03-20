@@ -31,10 +31,12 @@ class PrivateController extends PublicController
         if (!empty($UserName)) {
             $this->assign('UserName', session(C('USERNAME')));
         }
-        //分配左边菜单
-        $this->_left_menu();
         //分配列表上方菜单
         $this->_top_menu();
+
+        //分配左边菜单
+        $this->_left_menu();
+
         //分配网站顶部菜单
         $this->_web_top_menu();
         //检测是否为超级管理员
@@ -374,7 +376,7 @@ class PrivateController extends PublicController
             );
             array_unshift($url, $arr);
         }
-        $this->assign('top_menu_url', $url);
+//        $this->assign('top_menu_url', $url);
     }
 
 
@@ -384,51 +386,14 @@ class PrivateController extends PublicController
      **/
     public function _web_top_menu()
     {
-        $model = M('auth_cate');
-        $url = S('web_top_menu' . UID);
+        $adminMenu = D('AdminMenu','Service');
+        $url = S('top_menu_url' . UID);
         //检测缓存是否存在,如果不存在则生成缓存
         if ($url == false) {
-            $where = array(
-                'status' => 1,
-                'level'  => 0,
-            );
-            if (UID != C('ADMINISTRATOR')) {
-                $where['id'] = array('in', $this->group_id);
-            }
-            $dataArr = $model->where($where)->select();
-            $module = array();
-            foreach ($dataArr as $key => $value) {
-                $where = array(
-                    'pid'    => $value['id'],
-                    'status' => 1
-                );
-                $res = $model->where($where)->getField('id');
-                if ($res) {
-                    $module[] = $value['id'];
-                }
-            }
-            if (!empty($module)) {
-                $where = array(
-                    'id'     => array('in', $module),
-                    'status' => 1
-                );
-                $url = $model->where($where)->field('id,title,module')->order('sort DESC')->select();
-                foreach ($url as $key => &$value) {
-                    $where = array(
-                        'pid'    => $value['id'],
-                        'status' => 1
-                    );
-                    $str = $model->where($where)->getField('module');
-                    $value['url'] = U($str . '/Index/index', array('module' => MODULE_NAME));
-                }
-                unset($value);
-                //生成缓存
-                S('web_top_menu' . UID, $url);
-            }
+            $top_menu_url = $adminMenu->adminMenuEnum();
+            S('top_menu_url' . UID,$top_menu_url);
         }
-        if (count($url) > 1) {
-            $this->assign('web_top_menu_url', $url);
-        }
+        $this->assign('top_menu_url', $url);
     }
 
 

@@ -77,7 +77,6 @@ class PublicController extends Controller
     /**
      * login 登录页面
      * @author kevin.liu
-     * @time 2015-04-29
      **/
     public function login()
     {
@@ -88,7 +87,6 @@ class PublicController extends Controller
     /**
      * islogin 检测登录
      * @author kevin.liu
-     * @time 2015-04-29
      **/
     public function islogin()
     {
@@ -105,7 +103,6 @@ class PublicController extends Controller
     /**
      * code 检测验证码
      * @author kevin.liu
-     * @time 2015-3-23
      **/
     public function code()
     {
@@ -114,7 +111,6 @@ class PublicController extends Controller
     /**
      * logout 退出登录
      * @author kevin.liu
-     * @time 2015-06-05
      **/
     public function logout()
     {
@@ -238,7 +234,6 @@ class PublicController extends Controller
     /**
      * flashupload 上传方法
      * @author kevin.liu
-     * @time 2015-3-17
      **/
     public function flashupload()
     {
@@ -304,7 +299,6 @@ class PublicController extends Controller
     /**
      * editUpload 编辑器上传图片
      * @author kevin.liu
-     * @time 2015-04-29
      **/
     public function editUpload()
     {
