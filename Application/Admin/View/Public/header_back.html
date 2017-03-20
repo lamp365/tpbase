@@ -1,0 +1,48 @@
+<div class="lefter">
+    <div class="logo"><a href="#" target="_blank"><img src="__SYSTEM__/images/logo.png" alt="后台管理系统" /></a></div>
+</div>
+<div class="righter nav-navicon" id="admin-nav">
+    <div class="mainer">
+        <div class="admin-navbar">
+            <span class="float-right">
+            	<a class="button button-little bg-main" href="{:C('WEB_DOMAIN')}" target="_blank">前台首页</a>
+                <a class="button button-little bg-yellow" href="{:getU('logout')}">注销登录</a>
+            </span>
+            <ul class="nav nav-inline admin-nav">
+                <volist name="web_top_menu_url" id="vo">
+                    <li <?php if(checkMenuIsOn($vo['module'],'top')){ echo "class='active'";} ?>>
+                        <a href="{$vo.url}" class="icon-home">{$vo.title}</a>
+                        <ul>
+                            <volist name="menu_url" id="son_vo">
+                                <?php
+                                    $url = explode('/', $son_vo['name']);
+                                    $cname = $url[2];
+                                ?>
+                                <if condition="$son_vo['level'] eq 1" >
+                                    <li class="<?php if(checkMenuIsOn($son_vo['name'])){ echo 'active';} ?>">
+                                        <a href="{:$son_vo['name']}">{$son_vo.title}</a>
+                                        <span class="icon-sort-down "></span>
+                                    </li>
+                                <else/>
+                                    <ol>
+                                        <a href="#">测试一下</a>
+                                    </ol>
+                                </if>
+
+
+                            </volist>
+
+                        </ul>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+        <div class="admin-bread">
+            <span>您好，{$UserName}，欢迎您的光临。</span>
+            <ul class="bread">
+                <li><a href="{:getU('Index/index')}" class="icon-home"> 开始</a></li>
+                <li>后台首页</li>
+            </ul>
+        </div>
+    </div>
+</div>
