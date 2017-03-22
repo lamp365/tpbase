@@ -199,6 +199,7 @@ class PublicController extends Controller
         //将uid定义为常量方便后期统一使用
         defined("UID") or define("UID", $uid);
         $str = S('group_rules' . $uid);
+        $str = '';
 		//定义用户-用户组model
 		$userGroupId = D('GroupAccess');
         if ($str == false) {
@@ -213,22 +214,21 @@ class PublicController extends Controller
                 );
 				$group = $userGroupId ->getOneField('group_id',$map, true);
                 if (empty($group)) {
-                    $this->error('登陆失败,权限不足');
-                    $this -> skip();
+                    $this->error('访问权限不足');
                 }
+                //可以属于多个组
 				$where['id'] = array('in', $group);
             }
             $list = M('group')->where($where)->getField('rules', true);
             if (empty($list[0])) {
-                $this->error('登陆失败,权限不足');
-                $this -> skip();
+                $this->error('访问权限不足');
             }
-            $str = implode(',', $list);
-            $strArr = explode(',', $str);
-            $str = array_unique($strArr);
-            S('group_rules' . $uid, $str);
+            $str     = implode(',', $list);
+            $strArr  = explode(',', $str);
+            $str_arr = array_unique($strArr);
+            S('group_rules' . $uid, $str_arr);
         }
-        return $str;
+        return $str_arr;
     }
 
     /**

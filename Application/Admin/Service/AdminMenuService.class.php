@@ -84,7 +84,9 @@ class AdminMenuService extends Model{
                     )
                 ),
         );
-
-        return $data[$key];
+        if(array_key_exists($key,$data))
+            return $data[$key];
+        else
+            return array();
     }
 }

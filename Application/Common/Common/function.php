@@ -233,6 +233,7 @@ function create_cache($file){
  * pp($data,$obj,$aa);
  */
 function pp(){
+    echo "<meta charset='utf8' />";
     $arr = func_get_args();
     echo "<pre>";
     foreach($arr as $one){
@@ -247,6 +248,7 @@ function pp(){
  * pp($data,$obj,$aa);
  */
 function ppd(){
+    echo "<meta charset='utf8' />";
     $arr = func_get_args();
     echo "<pre>";
     foreach($arr as $one){

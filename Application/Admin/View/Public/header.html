@@ -9,60 +9,26 @@
                 <a class="button button-little bg-yellow" href="{:getU('logout')}">注销登录</a>
             </span>
             <ul class="nav nav-inline admin-nav">
-                <volist name="top_menu_url" id="vo">
+                <volist name="admin_menu_url" id="vo">
                     <li class="one_li">
                         <a href="javascript:;" onclick="getLeftMenu(this)" class="{$vo.icon}">{$vo.name}</a>
                         <ul>
-
-                            <li class="active">
-                                <a href="#">网站设置</a>
-                                <span class="icon-angle-double-down"></span>
-                            </li>
-
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试一下</span>
-                                </a>
-                            </ol>
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试2下</span>
-                                </a>
-                            </ol>
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试3下</span>
-                                </a>
-                            </ol>
-
-                            <li class="active">
-                                <a href="#">微信设置</a>
-                                <span class="icon-angle-double-down"></span>
-                            </li>
-
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试一下</span>
-                                </a>
-                            </ol>
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试2下</span>
-                                </a>
-                            </ol>
-                            <ol class="li_son">
-                                <a href="#">
-                                    <span class="icon-angle-double-right"></span>
-                                    <span>测试3下</span>
-                                </a>
-                            </ol>
-
-
+                            <volist name="vo['son']"  id="one_son">
+                                <li class="active">
+                                    <a href="{:getU($one_son['url'])}">{$one_son['name']}</a>
+                                    <span class="icon-angle-double-down"></span>
+                                </li>
+                                <div>
+                                    <volist name="one_son['son']"  id="second_son">
+                                        <ol class="li_son">
+                                            <a href="{:getU($second_son['name'])}">
+                                                <span class="icon-angle-double-right"></span>
+                                                <span>{$second_son['title']}</span>
+                                            </a>
+                                        </ol>
+                                    </volist>
+                                </div>
+                            </volist>
                         </ul>
                     </li>
                 </volist>

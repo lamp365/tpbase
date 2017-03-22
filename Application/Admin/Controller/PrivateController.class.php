@@ -24,21 +24,16 @@ class PrivateController extends PublicController
      **/
     public function _initialize()
     {
-        //获取到当前用户所属所有分组拥有的权限id
+        //获取到当前用户所属所有分组拥有的权限id  数组形式
         $this->group_id = self::_rules();
         $UserName = session(C('USERNAME'));
         //检测后台管理员昵称是否存在，如果不等于空或者0则获取配置文件里定义的name名字并分配给首页
         if (!empty($UserName)) {
             $this->assign('UserName', session(C('USERNAME')));
         }
-        //分配列表上方菜单
-        $this->_top_menu();
+        //分配网站菜单
+        $this->_admin_menu();
 
-        //分配左边菜单
-        $this->_left_menu();
-
-        //分配网站顶部菜单
-        $this->_web_top_menu();
         //检测是否为超级管理员
         if (UID == C('ADMINISTRATOR')) {
             return true;
@@ -54,18 +49,7 @@ class PrivateController extends PublicController
 		if(!empty($iskey) && !in_array($iskey,$this -> group_id)){
 			$this->auth = new Auth();
 			if(!$this->auth->check($key, UID)){
-				$url = getU('Public/login');
-				//如果为ajax请求，则返回301，并且跳转到指定页面
-				if(IS_AJAX){
-					session('[destroy]');
-					$data = array(
-						'statusCode' => 301,
-						'url'        => $url
-					);
-					die(json_encode($data));
-				}
-				session('[destroy]');
-				$this->redirect($url);
+				$this->error("您没有权限访问！");
 			}
 		}
     }
@@ -308,92 +292,62 @@ class PrivateController extends PublicController
         return $list;
     }
 
-    /**
-     * 左边菜单
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    public function _left_menu()
-    {
-        $url = S('left_menu');
-        if ($url == false) {
-            $where = array(
-                'status' => 1,
-                'level'  => 1,
-                'module' => MODULE_NAME
-            );
-            if (UID != C('ADMINISTRATOR')) {
-                $where['id'] = array('in', $this->group_id);
-            }
-            $model = M('auth_cate');
-            $url = $model->where($where)->order('sort DESC')->select();
-            foreach ($url as $key => &$value) {
-                $where = array(
-                    'pid' => $value['id'],
-                    'status' => 1,
-                    'is_menu' => array('neq',0)
-                );
-                $info = $model->where($where)->count();
-                if($info){
-                    array_splice($url, $key,1);
-                }else{
-                    $urls = $value['name'] . '/index';
-                    $value['name'] = U($urls); 
-                }
-            }
-            unset($value);
-            S('left_menu' . UID, $url);
-        }
-        $this->assign('menu_url', $url);
-    }
 
-    /**
-     * 列表上方菜单
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    public function _top_menu()
-    {
-        $module_name = MODULE_NAME;
-        $controller  = CONTROLLER_NAME;
-        $where = array(
-            'status'     => 1,
-            'level'      => 2,
-            'is_menu'    => 0,
-            'module'     => $module_name,
-            'controller' => $controller
-        );
-        if (UID != C('ADMINISTRATOR')) {
-            $where['id'] = array('in', $this->group_id);
-        }
-        $url = M('auth_cate')->where($where)->field('module,controller,method,title,name')->order('sort DESC')->select();
-        //检测控制器是不是等于Index
-        if ($controller == 'Index') {
-            $arr = array(
-                'module'     => $module_name,
-                'controller' => 'Index',
-                'method'     => 'index',
-                'title'      => '站点信息',
-                'name'       => $module_name . '/Index/index'
-            );
-            array_unshift($url, $arr);
-        }
-//        $this->assign('top_menu_url', $url);
-    }
 
 
     /**
-     * 网站顶部菜单
+     * 网站菜单
      * @author kevin.liu<www.dayblog.cn>
      **/
-    public function _web_top_menu()
+    public function _admin_menu()
     {
         $adminMenu = D('AdminMenu','Service');
-        $url = S('top_menu_url' . UID);
+        $admin_menu_url = S('admin_menu_url' . UID);
+        $admin_menu_url = '';
         //检测缓存是否存在,如果不存在则生成缓存
-        if ($url == false) {
-            $top_menu_url = $adminMenu->adminMenuEnum();
-            S('top_menu_url' . UID,$top_menu_url);
+        if ($admin_menu_url == false) {
+            //更据用户所具有的group_id找出auth_cate对应的name（url）地址
+            $cate_arr = array();
+            foreach($this->group_id as $cate_id){
+                $cate = M('auth_cate')->where("id={$cate_id}")->getField('name');
+                if(!empty($cate)){
+                    $cate_arr[$cate_id] = $cate;
+                }
+            }
+            $cate_arr_flip = array_flip($cate_arr);
+
+            //获取最顶部的菜单
+            $admin_menu_url = $adminMenu->adminMenuEnum();
+
+            //获取左侧一级菜单
+            foreach($admin_menu_url as $key => &$admin_val){
+                $leftMenu  = $adminMenu->adminLeftMenu($key);
+                $_leftMenu = array();
+                //如果权限中没有该左侧地址菜单  则进行去掉该顶部菜单
+                if(empty($leftMenu)){
+                    unset($admin_menu_url[$key]);
+                }else{
+                    //否则有再权限中的 左侧菜单要提取出来  并找出它的下一级子菜单
+                    foreach($leftMenu as  $one_menu){
+                        if(in_array($one_menu['url'],$cate_arr)){
+                            $cate_id = $cate_arr_flip[$one_menu['url']];
+                            //查找它的子分类
+                            $one_menu['son'] = M('auth_cate')->where("pid={$cate_id}")->field('name,title,id')->order('sort desc')->select();
+
+                            $_leftMenu[$cate_id] = $one_menu;
+                        }
+                    }
+                    if(empty($_leftMenu)){
+                        //如果全部都移除掉了 说明顶部菜单中没有一个左侧菜单，去掉该顶部菜单
+                        unset($admin_menu_url[$key]);
+                    }else{
+                        $admin_val['son'] = $_leftMenu;
+                    }
+                }
+            }
+            S('admin_menu_url' . UID,$admin_menu_url);
         }
-        $this->assign('top_menu_url', $url);
+        $this->assign('admin_menu_url', $admin_menu_url);
     }
 
 
