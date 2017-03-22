@@ -11,6 +11,9 @@
 namespace Admin\Controller;
 class AdminController extends PrivateController
 {
+    public function index(){
+        $this->display();
+    }
     /**
      * uesr 后台管理员列表
      * @author kevin.liu

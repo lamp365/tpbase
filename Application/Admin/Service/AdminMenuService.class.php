@@ -31,6 +31,7 @@ class AdminMenuService extends Model{
     }
 
     public function adminLeftMenu($key){
+        //模块 控制器
         $data =  array(
             'system_mange' =>
                 array(

@@ -15,13 +15,13 @@
                         <ul>
                             <volist name="vo['son']"  id="one_son">
                                 <li class="active">
-                                    <a href="{:getU($one_son['url'])}">{$one_son['name']}</a>
+                                    <a href="javascript:;" data-url="{:getU($one_son['url'].'/index')}">{$one_son['name']}</a>
                                     <span class="icon-angle-double-down"></span>
                                 </li>
                                 <div>
                                     <volist name="one_son['son']"  id="second_son">
                                         <ol class="li_son">
-                                            <a href="{:getU($second_son['name'])}">
+                                            <a href="{:getU($second_son['name'])}" target="main_box">
                                                 <span class="icon-angle-double-right"></span>
                                                 <span>{$second_son['title']}</span>
                                             </a>
@@ -38,7 +38,7 @@
             <span>您好，{$UserName}，欢迎您的光临。</span>
             <ul class="bread">
                 <li><a href="{:getU('Index/index')}" class="icon-home"> 开始</a></li>
-                <li>后台首页</li>
+                <li>后台主页</li>
             </ul>
         </div>
     </div>
