@@ -9,7 +9,7 @@ class UserController extends PrivateController
 {
     public function userLists()
     {
-
+        ppd('还没有哟过户');
     }
 
     public function rootLists()

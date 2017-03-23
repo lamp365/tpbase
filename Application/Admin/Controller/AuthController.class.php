@@ -18,8 +18,47 @@ class AuthController extends PrivateController
         $this->display();
     }
 
+    //分类菜单  添加或者修改
+    public function addCate()
+    {
+        if(IS_POST){
+            $id = I('post.id');
+            if($id){
+                //modify old
+            }else{
+                //add new
+
+            }
+        }
+        $cate = array();
+        if($id = I("get.id")){
+            $cate = M('auth_cate')->where("id={$id}")->find();
+        }
+
+        $this->assign('cate',$cate);
+        $this->display();
+    }
+
+    //添加一级菜单
     public function addMenu()
     {
+        if(IS_POST){
+
+        }
+        $id   = I("get.id");
+        $cate = M('auth_cate')->where("id={$id}")->find();
+        $this->assign('cate',$cate);
+        $this->display();
+    }
+
+    public function editMenu()
+    {
+        if(IS_POST){
+
+        }
+        $id   = I("get.id");
+        $cate = M('auth_cate')->where("id={$id}")->find();
+        $this->assign('cate',$cate);
         $this->display();
     }
 }

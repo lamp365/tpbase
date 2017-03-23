@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="Admin@Public:top"/>
+    <title>{$top_nav}</title>
+</head>
+<body style="background-color: #ffffff">
+<div class="container">
+    <h3>修改菜单</h3><br/>
+    <div class="alert alert-green">
+        <span class="close rotate-hover"></span><strong>上级分类：</strong>
+        {$cate.title}
+    </div>
+
+    <form action="__CONTROLLER__/addMenu">
+
+        <div class="line-small mb10">
+            <div class="label x1 x1-move" style="margin-top: 6px;">
+                <label for="title">菜单名称</label>
+            </div>
+            <div class="field x4">
+                <input type="text" class="input" id="title" name="title"  value="{$cate.title}" size="50" placeholder="菜单名称" data-validate="required:请填写你菜单的名称" />
+            </div>
+        </div>
+
+        <div class="line-small mb10">
+            <div class="label x1 x1-move" style="margin-top: 4px;">
+                <label for="model">模型</label>
+            </div>
+            <div class="field x4">
+                <input type="text" class="input" value="{$cate.module}" id="model" name="module" size="50" placeholder="输入模型" data-validate="required:请填写你的模型" />
+            </div>
+        </div>
+
+        <div class="line-small mb10">
+            <div class="label x1 x1-move" style="margin-top: 4px;">
+                <label for="controller">控制器</label>
+            </div>
+            <div class="field x4">
+                <input type="text" class="input" id="controller"  value="{$cate.controller}" name="controller" size="50" placeholder="输入控制器" data-validate="required:请填写你的控制器" />
+            </div>
+        </div>
+
+        <div class="line-small mb10">
+            <div class="label x1 x1-move" style="margin-top: 4px;">
+                <label for="method">方法名</label>
+            </div>
+            <div class="field x4">
+                <input type="text" class="input" id="method" name="method"  value="{$cate.method}" size="50" placeholder="输入方法名" data-validate="required:请填写你的方法名" />
+            </div>
+        </div>
+
+        <div class="line-smll">
+            <div class="x1 x1-move"></div>
+            <div class="x4">
+                <input type="hidden" value="{$cate.id}" name="id">
+                <button class="button bg-blue button-small" type="submit">确认修改</button>
+                <button class="button bg-red-light button-small" onclick="$.redirect()">返回上一级</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

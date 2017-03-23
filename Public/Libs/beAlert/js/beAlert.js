@@ -160,7 +160,7 @@ $.redirect = function(url,after){
 
     setTimeout(function(){
         if($.isEmptyObject(url)){
-            window.location.reload();
+            window.history.back();
         }else{
             window.location = url;
         }
