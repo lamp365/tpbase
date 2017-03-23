@@ -69,19 +69,9 @@ class AdminMenuService extends Model{
                         'url'  => 'Admin/User'
                     ),
                     array(
-                        'name' => '管理员管理',
-                        'icon' => 'icon-home',
-                        'url'  => 'Admin/Root'
-                    ),
-                    array(
                         'name' => '权限管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Auth'
-                    ),
-                    array(
-                        'name' => '分组管理',
-                        'icon' => 'icon-home',
-                        'url'  => 'Admin/Group'
                     )
                 ),
         );

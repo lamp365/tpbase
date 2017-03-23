@@ -4,13 +4,70 @@
     <include file="Admin@Public:top"/>
     <title>{$top_nav}</title>
 </head>
-<body>
-<div class="form-group">
-    <div class="label">
-        <label for="sitename">网站名称</label>
+<body style="background-color: #ffffff">
+<div class="container">
+    <h3>新增菜单</h3><br/>
+
+    <div class="line-small mb10">
+        <div class="label1 x1 x1-move" style="margin-top: 4px;">
+            <label for="cate"><b>选择分类</b></label>
+        </div>
+        <div class="x4" id="cate" >
+            <select class="input" name="pid">
+                <option value="0">选择分类</option>
+                <option>CSS</option>
+                <option>元件</option>
+                <option>模块</option>
+                <option>javascript组件</option>
+            </select>
+        </div>
     </div>
-    <div class="field">
-        <input type="text" class="input" id="sitename" name="sitename" size="50" placeholder="网站名称" data-validate="required:请填写你网站的名称" />
+
+    <div class="line-small mb10">
+        <div class="label1 x1 x1-move" style="margin-top: 4px;">
+            <label for="cate2"><b>上级菜单</b></label>
+        </div>
+        <div class="x4" id="cate2" >
+            <select class="input" name="pid">
+                <option value="0">顶级分类</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="line-small mb10">
+        <div class="label x1 x1-move" style="margin-top: 6px;">
+            <label for="sitename">菜单名称</label>
+        </div>
+        <div class="field x4">
+            <input type="text" class="input" id="sitename" name="title" size="50" placeholder="菜单名称" data-validate="required:请填写你菜单的名称" />
+        </div>
+    </div>
+
+    <div class="line-small mb10">
+        <div class="label x1 x1-move" style="margin-top: 4px;">
+            <label for="model">模型</label>
+        </div>
+        <div class="field x4">
+            <input type="text" class="input" id="model" name="module" size="50" placeholder="输入模型" data-validate="required:请填写你的模型" />
+        </div>
+    </div>
+
+    <div class="line-small mb10">
+        <div class="label x1 x1-move" style="margin-top: 4px;">
+            <label for="controller">控制器</label>
+        </div>
+        <div class="field x4">
+            <input type="text" class="input" id="controller" name="controller" size="50" placeholder="输入控制器" data-validate="required:请填写你的控制器" />
+        </div>
+    </div>
+
+    <div class="line-small mb10">
+        <div class="label x1 x1-move" style="margin-top: 4px;">
+            <label for="method">方法名</label>
+        </div>
+        <div class="field x4">
+            <input type="text" class="input" id="method" name="method" size="50" placeholder="输入方法名" data-validate="required:请填写你的方法名" />
+        </div>
     </div>
 </div>
 </body>
