@@ -10,7 +10,7 @@ class PublicModel extends Model
 	 * @param string $file 字段名
 	 * @param array where 要查询的条件
 	 * @param  $type 默认true
-	 * @author 普罗米修斯 php63.cc
+	 * @author kevin.liu dayblog.cn
 	 **/
 	public function getOneField($file, $where=array(), $type = false,$order=''){
 		$result = $this->where($where)->order($order)->getField($file, $type);
@@ -22,7 +22,7 @@ class PublicModel extends Model
      * @param string $where 查询条件
      * @param string $field 要查询的字段,默认全部
      * @return array 返回查询到的结果
-     * @author 刘中胜
+     * @author kevin.liu
      **/
     public function oneInquire($where, $field = '*')
     {
@@ -38,7 +38,7 @@ class PublicModel extends Model
      * 查询总数
      * @param string $where 查询条件
      * @param string $field 要查询的字段,默认全部
-     * @author 刘中胜
+     * @author kevin.liu
      * @return int 总数
      **/
     public function total($where)
@@ -53,7 +53,7 @@ class PublicModel extends Model
      * @param string $limit 分页参数
      * @param string $order 排序方式
      * @param string $field 要查询的字段
-     * @author 刘中胜
+     * @author kevin.liu
      * @return array 查询到的结果集
      **/
     public function dataSet($where,$order,$field,$limit='')
@@ -67,7 +67,7 @@ class PublicModel extends Model
      * @param string $where 查询条件
      * @param string $limit 分页参数
      * @param string $value 修改的值
-     * @author 刘中胜
+     * @author kevin.liu
      * @return bool 
      **/
     public function onesave($where,$field,$value)
@@ -81,7 +81,7 @@ class PublicModel extends Model
      * @param int $id 要删除的数据id默认0
      * @param string $tableName 表名默认为空
 	 * @param string $key 查询的key,默认id
-     * @author 刘中胜
+     * @author kevin.liu
      * @return bool 
      **/
 	public function del($id = 0,$key = 'id', $type = 0, $tableName = null)
@@ -112,8 +112,7 @@ class PublicModel extends Model
 	
 	/**
 	 * edit 添加编辑页面
-	 * @author 刘中胜
-	 * @time 2015-12-10
+	 * @author kevin.liu
 	 **/
     public function edit()
     {
@@ -139,8 +138,7 @@ class PublicModel extends Model
 
     /**
      * 分类添加编辑页面
-     * @author 刘中胜
-     * @time 2016-01-29
+     * @author kevin.liu
      **/
     public function editCate(){
         $data = $this -> create();
@@ -157,8 +155,7 @@ class PublicModel extends Model
 
     /**
      * 删除分类
-     * @author 刘中胜
-     * @time 2016-01-29
+     * @author kevin.liu
      **/
     public function delcate()
     {
@@ -193,8 +190,7 @@ class PublicModel extends Model
 
     /**
      * 更新分类操作
-     * @author 刘中胜
-     * @time 2016-01-29
+     * @author kevin.liu
      **/
     public function updateCate()
     {

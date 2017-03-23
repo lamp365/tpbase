@@ -34,19 +34,22 @@ class PrivateController extends PublicController
         //分配网站菜单
         $this->_admin_menu();
 
-        //检测是否为超级管理员
-        if (UID == C('ADMINISTRATOR')) {
-            return true;
-        }
         //读取缓存名为check_iskey+uid的缓存
         $key = MODULE_NAME.'/'. CONTROLLER_NAME . '/' . ACTION_NAME;
         $where = array(
             'name'   => $key,
             'status' => 1
         );
-        $iskey = M('auth_cate')->where($where)->getField('id');
+        $auth_cate = M('auth_cate')->where($where)->field('id,title')->find();
+        $this->assign('top_nav',$auth_cate['title']);
+
+        //检测是否为超级管理员
+        if (UID == C('ADMINISTRATOR')) {
+            return true;
+        }
+
 		//检测该规则id是否存在于分组拥有的权限里
-		if(!empty($iskey) && !in_array($iskey,$this -> group_id)){
+		if(!empty($auth_cate) && !in_array($auth_cate['id'],$this -> group_id)){
 			$this->auth = new Auth();
 			if(!$this->auth->check($key, UID)){
 				$this->error("您没有权限访问！");

@@ -76,10 +76,10 @@ function formatTime($date, $type=1)
             $date = date('Y-m-d H:i:s',$date);
             break;
         case 2:
-            $date = date('Y-m-d',$date);
+            $date = date('Y-m-d H:i',$date);
             break;
         case 3:
-            $date = date('y-m-d',$date);
+            $date = date('Y-m-d',$date);
             break;
     }
   return $date;

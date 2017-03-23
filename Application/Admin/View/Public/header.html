@@ -15,15 +15,15 @@
                         <ul>
                             <volist name="vo['son']"  id="one_son">
                                 <li class="active">
-                                    <a href="javascript:;" data-url="{:getU($one_son['url'].'/index')}">{$one_son['name']}</a>
+                                    <a href="javascript:;" data-url="{:getU($one_son['url'].'/index')}" class="one_tit">{$one_son['name']}</a>
                                     <span class="icon-angle-double-down"></span>
                                 </li>
-                                <div>
+                                <div class="group_ol">
                                     <volist name="one_son['son']"  id="second_son">
                                         <ol class="li_son">
-                                            <a href="{:getU($second_son['name'])}" target="main_box">
+                                            <a href="{:getU($second_son['name'])}" target="main_box" onclick="navtoggle(this)">
                                                 <span class="icon-angle-double-right"></span>
-                                                <span>{$second_son['title']}</span>
+                                                <span class="second_tit">{$second_son['title']}</span>
                                             </a>
                                         </ol>
                                     </volist>
@@ -38,7 +38,7 @@
             <span>您好，{$UserName}，欢迎您的光临。</span>
             <ul class="bread">
                 <li><a href="{:getU('Index/index')}" class="icon-home"> 开始</a></li>
-                <li>后台主页</li>
+                <li class="show_navtoggle">后台主页</li>
             </ul>
         </div>
     </div>
@@ -48,6 +48,13 @@
     function getLeftMenu(obj){
         $(obj).closest('.admin-nav').find('.one_li').removeClass('active');
         $(obj).parent().addClass('active');
+    }
+
+    function navtoggle(obj){
+        var second_tit = $(obj).find('.second_tit').html();
+        var one_tit    = $(obj).closest(".group_ol").prev().find(".one_tit").html();
+        var tit = one_tit+" / "+second_tit;
+        $(".show_navtoggle").html(tit);
     }
 
     $(function(){

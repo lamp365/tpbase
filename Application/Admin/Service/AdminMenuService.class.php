@@ -64,12 +64,12 @@ class AdminMenuService extends Model{
             'user_mange' =>
                 array(
                     array(
-                        'name' => '会员列表',
+                        'name' => '会员管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/User'
                     ),
                     array(
-                        'name' => '管理员列表',
+                        'name' => '管理员管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Root'
                     ),
