@@ -87,7 +87,7 @@ class PrivateController extends PublicController
      */
     protected function _modelCount($where = array(), $type = 1, $num = '')
     {
-        $count = $this->model->total($where);
+        $count = $this->model-> where($where)->count();
         if ($type == 1) {
             if ($num == '') {
                 $num = C('PAGENUM');
@@ -113,7 +113,7 @@ class PrivateController extends PublicController
         if (!$this->model) {
             $this->error("表名未定义");
         }
-        $list = $this->model->dataSet($where, $order, $field, $limit);
+        $list = $this->model->where($where)->limit($limit)->order($order)->field($field)->select();
         return $list;
     }
 

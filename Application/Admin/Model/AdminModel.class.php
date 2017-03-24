@@ -1,11 +1,11 @@
 <?php
 namespace Admin\Model;
-class AdminModel extends \Common\Model\PublicModel
+use Think\Model;
+class AdminModel extends Model
 {
     /**
      * $_validate 自动验证
      * @author kevin.liu
-     * @time 2015-04-14
      **/
     protected $_validate = array(
         array('username', 'require', '帐号必须填写'),

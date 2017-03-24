@@ -1,6 +1,7 @@
 <?php
 namespace Admin\Model;
-class GroupAccessModel extends \Common\Model\PublicModel
+use Think\Model;
+class GroupAccessModel extends Model
 {
 
 }

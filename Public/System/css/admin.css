@@ -28,8 +28,8 @@ form .form-group:last-child{padding-bottom:0;}
 .admin-bread .bread{margin-bottom:0;}
 .admin-bread span{float:right;font-size:12px;color:#666;line-height:36px;}
 
-.admin{background:#fff;position:fixed;border-left:solid 1px #b5cfd9;right:0;bottom:0;top:87px;left:180px; overflow:auto;}
-.main_frame{padding: 12px;display: block;height: 100%;width: 100%;}
+.admin{background:#fff;position:fixed;border-left:solid 1px #b5cfd9;right:0;bottom:0;top:87px;left:180px;}
+.main_frame{padding: 12px 8px 12px 12px;display: block;height: 100%;width: 100%;}
 .alert{margin-bottom:20px;}
 .admin-panel td{line-height:24px;}
 .admin-panel td .button{line-height:16px;}

@@ -1,6 +1,7 @@
 <?php
 namespace Admin\Model;
-class GroupModel extends \Common\Model\PublicModel
+use Think\Model;
+class GroupModel extends Model
 {
     protected $_validate = array(
         array('title', 'require', '分组名称不能为空'),

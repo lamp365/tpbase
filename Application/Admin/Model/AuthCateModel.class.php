@@ -1,6 +1,7 @@
 <?php
 namespace Admin\Model;
-class AuthCateModel extends \Common\Model\PublicModel
+use Think\Model;
+class AuthCateModel extends Model
 {
     protected $_validate = array(
         array('title', 'require', '标题必须填写'), //默认情况下用正则进行验证
@@ -14,7 +15,7 @@ class AuthCateModel extends \Common\Model\PublicModel
     /**
      * 添加编辑权限方法
      * @return mixed 成功返回数组,失败返回错误消息
-     * @author 刘中胜
+     * @author kevin.liu
      */
     public function authedit()
     {
@@ -151,7 +152,7 @@ class AuthCateModel extends \Common\Model\PublicModel
      * @param int $id 权限id
      * @param $Action 权限控制器路径
      * @return bool
-     * @author 刘中胜
+     * @author kevin.liu
      */
     public function editAction($id, $Action)
     {
