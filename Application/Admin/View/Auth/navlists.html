@@ -26,9 +26,9 @@
             <volist name="parentCate" id="cate">
                 <tr>
                     <td colspan="3" style="text-align: left">
-                        <strong>{$cate.title}</strong>&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;<strong>{$cate.title}</strong>&nbsp;&nbsp;
                     </td>
-                    <td>{$cate.name}</td>
+                    <td><strong>{$cate.name}</strong></td>
                     <td><input type="text" class="input" placeholder="排序" value="{$cate.sort}" style="width: 60px;text-align: center;margin: 0 auto;"/></td>
                     <td>
                         <a class="button border-blue button-little" href="__CONTROLLER__/addMenu/id/{$cate.id}">添加菜单</a>

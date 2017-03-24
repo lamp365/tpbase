@@ -22,14 +22,18 @@ class AuthController extends PrivateController
     public function addCate()
     {
         if(IS_POST){
-            $id = I('post.id');
-            if($id){
-                //modify old
+            $this->model = D("AuthCate");
+            $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
+            $_POST['name']  = rtrim($name,'/');
+            $_POST['level'] = 2;
+            $res = $this->_modelAdd();
+            if($res){
+                $this->success("操作成功",getU("navlists"));
             }else{
-                //add new
-
+                $this->error($this->model_error);
             }
         }
+
         $cate = array();
         if($id = I("get.id")){
             $cate = M('auth_cate')->where("id={$id}")->find();
@@ -43,7 +47,16 @@ class AuthController extends PrivateController
     public function addMenu()
     {
         if(IS_POST){
-
+            $this->model = D("AuthCate");
+            $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
+            $_POST['name']  = rtrim($name,'/');
+            $_POST['level'] = 2;
+            $res = $this->_modelAdd();
+            if($res){
+                $this->success("操作成功",getU("navlists"));
+            }else{
+                $this->error($this->model_error);
+            }
         }
         $id   = I("get.id");
         $cate = M('auth_cate')->where("id={$id}")->find();
@@ -51,13 +64,27 @@ class AuthController extends PrivateController
         $this->display();
     }
 
+    //编辑一级菜单
     public function editMenu()
     {
         if(IS_POST){
-
+            $this->model = D("AuthCate");
+            $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
+            $_POST['name']  = rtrim($name,'/');
+            $_POST['level'] = 2;
+            $res = $this->_modelAdd();
+            if($res){
+                $this->success("操作成功",getU("navlists"));
+            }else{
+                $this->error($this->model_error);
+            }
         }
+        $auth = M('auth_cate');
         $id   = I("get.id");
-        $cate = M('auth_cate')->where("id={$id}")->find();
+        $cate = $auth->where("id={$id}")->find();
+        //查找分分类
+        $parent = $auth->field('title')->where("id={$cate['pid']}")->find();
+        $this->assign('parent',$parent);
         $this->assign('cate',$cate);
         $this->display();
     }

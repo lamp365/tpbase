@@ -93,8 +93,6 @@ class PublicController extends Controller
         $model = D('Admin');
         $data = $model->login();
         if ($data) {
-            //登陆后获取所属分组的id
-//            $str = self::_rules();
             $this->success('登录成功', getU('Index/index'));
         }
         $this->error($model->getError());

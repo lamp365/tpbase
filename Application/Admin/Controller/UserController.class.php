@@ -18,10 +18,9 @@ class UserController extends PrivateController
         //分配按钮
         $where = array(
             'status' => 1,
-            'type'   => 0  //type 1分页用，可获取分页信息  否则返回总条数
         );
         $list    = self::_modelCount($where);
-        $dataArr = self::_modelSelect($where, 'sort DESC', "id,username,phone,last_time,email,last_ip,login_num", $list['limit']);
+        $dataArr = self::_modelSelect($where, "id,username,phone,last_time,email,last_ip,login_num",'sort DESC', $list['limit']);
         $this->assign('dataArr',$dataArr);
         $this->display();
     }

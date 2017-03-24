@@ -62,7 +62,7 @@ class PrivateController extends PublicController
      * 添加编辑操作
      * @param string $model 要操作的表
      * @param string $url 要跳转的地址
-     * @param int $typeid 0 为直接跳转 1为返回数组
+     * @param int $typeid 0 为直接返回 1为返回数组
      * @return boolean
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
@@ -71,7 +71,9 @@ class PrivateController extends PublicController
         if (!$this->model) {
             $this->error('请传入操作表名');
         }
+
         $data = $this->model->create();
+
         if (empty($data)) {
             $this->model_error = "数据初始化失败";
             return false;
@@ -82,9 +84,10 @@ class PrivateController extends PublicController
                 $this->model_error = "添加操作失败";
                 return false;
             }
+            $res = $id;
         } else {
             $res = $this->model->save();
-            if ($res === false) {
+            if (!$res) {
                 $this->model_error = "更新操作失败";
                 return false;
             }
@@ -93,7 +96,7 @@ class PrivateController extends PublicController
         if ($typeid == 1) {
             return $data;
         }
-       return true;
+       return $res;
     }
 
     /**

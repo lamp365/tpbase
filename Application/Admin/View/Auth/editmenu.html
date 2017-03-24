@@ -9,10 +9,10 @@
     <h3>修改菜单</h3><br/>
     <div class="alert alert-green">
         <span class="close rotate-hover"></span><strong>上级分类：</strong>
-        {$cate.title}
+        {$parent.title}
     </div>
 
-    <form action="__CONTROLLER__/addMenu">
+    <form action="__CONTROLLER__/editMenu" method="post">
 
         <div class="line-small mb10">
             <div class="label x1 x1-move" style="margin-top: 6px;">
