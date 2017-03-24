@@ -14,9 +14,10 @@ use Think\Auth;
 
 class PrivateController extends PublicController
 {
-    public $model = null;
-    private $auth = null;
-    private $group_id = array();
+    public  $model        = null;
+    private $auth         = null;
+    public  $model_error  = null;
+    private $group_id     = array();
 
     /**
      * 初始化方法
@@ -65,16 +66,34 @@ class PrivateController extends PublicController
      * @return boolean
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _modelAdd($url = '', $typeid = 0)
+    protected function _modelAdd($typeid = 0)
     {
         if (!$this->model) {
             $this->error('请传入操作表名');
         }
-        $data = $this->model->edit();
+        $data = $this->model->create();
+        if (empty($data)) {
+            $this->model_error = "数据初始化失败";
+            return false;
+        }
+        if (empty($data['id'])) {
+            $id = $this->model->add();
+            if (!$id) {
+                $this->model_error = "添加操作失败";
+                return false;
+            }
+        } else {
+            $res = $this->model->save();
+            if ($res === false) {
+                $this->model_error = "更新操作失败";
+                return false;
+            }
+        }
+
         if ($typeid == 1) {
             return $data;
         }
-        $data ? $this->success($data['id'] ? '更新成功' : '添加成功', U($url)) : $this->error($this->model->getError());
+       return true;
     }
 
     /**
@@ -108,7 +127,7 @@ class PrivateController extends PublicController
      * @return array
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _modelSelect($where, $order, $field = "*", $limit = '')
+    protected function _modelSelect($where, $field = "*", $order,  $limit = '')
     {
         if (!$this->model) {
             $this->error("表名未定义");
@@ -118,46 +137,54 @@ class PrivateController extends PublicController
     }
 
     /**
-     * 删除一条数据
-     * @param string $url 跳转地址
-     * @param int $type 如果为1则表示删除后还有其他操作
+     * 删除一条数据 或者多条数据
+     * @param int $type 如果为1则表示 删除多条 where in   0则表示单条
      * @return string 返回执行结果
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _del($url)
+    protected function _modelDelete($key = 'id', $type = 0, $tableName = null)
     {
         if (!$this->model) {
             $this->error("表名未定义");
         }
         $id = I('get.id', 0, 'intval');
-        $res = $this->model->del($id);
-        if (!$res) {
-            $this->error($this->model->getError());
+        if(empty($id)){
+            $this->model_error = '参数错误';
+            return false;
         }
-        delTemp();
-        $this->success('删除成功', U($url));
+        if(is_null($tableName)){
+            $tableName = $this;
+        }else{
+            $tableName = M($tableName);
+        }
+
+        $where['status'] =1;
+        if($type){
+            $where[$key] = array('in',$id);
+        }else{
+            $where[$key] = $id;
+        }
+        $res = $tableName -> where($where)->delete();
+        if(!$res){
+            $this->model_error = '删除失败';
+            return false;
+        }else{
+           return true;
+        }
     }
 
     /**
      * 查询一条数据
      * @param array $where 条件
-     * @param $max 是否查询最大的排序字段
-     * @param int $type 默认为1：分配到模板 ，其他返回
      * @return mixed
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _oneInquire($where, $type = 1)
+    protected function _modelFind($where, $field = '*')
     {
         if (!$this->model) {
             $this->error("表名未定义");
         }
-        $info = $this->model->oneInquire($where);
-        if (!$info) {
-            $this->error($this->model->getError());
-        }
-        if ($type == 1) {
-            return $this->assign('info', $info);
-        }
+        $info = $this->model->where($where)->field($field)->find();
         return $info;
     }
 
@@ -352,33 +379,6 @@ class PrivateController extends PublicController
         }
         $this->assign('admin_menu_url', $admin_menu_url);
     }
-
-
-    /**
-     * 权限判断 所有一级菜单点击都进入这个方法
-     * @author kevin.liu<www.dayblog.cn>
-     * @time 2016-06-15
-     **/
-    public function index()
-    {
-        $url = MODULE_NAME . '/' . CONTROLLER_NAME;
-        $where = array(
-            'a.name' => $url,
-            'a.level'=> 1,
-            'b.status' => 1
-        );
-        if(UID != C('ADMINISTRATOR')){
-            $where['b.id']   = array('in',$this->group_id);
-        }
-        $info = M()
-            -> table('__AUTH_CATE__ a')
-            -> join('LEFT JOIN __AUTH_CATE__ b ON a.id=b.pid')
-            -> where($where)
-            -> order('b.sort DESC')
-            -> getField('b.name');
-        $this->redirect($info);
-    }
-
 
     /**
      * 分类列表
