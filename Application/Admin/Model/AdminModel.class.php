@@ -15,6 +15,7 @@ class AdminModel extends Model
      **/
     protected $_validate = array(
         array('username', 'require', '帐号必须填写'),
+        array('username','checkUnique','帐号名称已经存在！',0,'unique',self::MODEL_BOTH,'callback'),
         array('password', 'require', '密码必须填写'),
         array('name', 'require', '姓名必须填写'),
         array('email', 'require', '邮件必须填写'),
@@ -33,7 +34,25 @@ class AdminModel extends Model
         array('last_ip', 'get_client_ip', self::MODEL_INSERT, 'function'),
     );
 
-
+    /**
+     * 检查用户名唯一性
+     * @return bool
+     */
+    function checkUnique(){
+        $map = array();
+        $pk  = $this->getPk();
+        //如果有主键传入, 说明是编辑, 加入排除自己的条件.
+        if(!empty($_REQUEST[$pk])){
+            $map[$pk] = array('neq', intval($_REQUEST[$pk]));
+        }
+        $map['username'] = array('eq', trim($_REQUEST['username']));
+        $res = $this->where($map)->find();
+        if(empty($res)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /**
      * alogin　登录操作
      * @reutrn string
