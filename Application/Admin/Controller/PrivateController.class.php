@@ -73,7 +73,7 @@ class PrivateController extends PublicController
         $data = $this->model->create();
 
         if (empty($data)) {
-            $this->model_error = "数据初始化失败";
+            $this->model_error = $this->model->getError();
             return false;
         }
         if (empty($data['id'])) {

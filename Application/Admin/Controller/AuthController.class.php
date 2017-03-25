@@ -19,7 +19,7 @@ class AuthController extends PrivateController
     }
 
     //分类菜单  添加或者修改
-    public function addCate()
+    public function addcate()
     {
         if(IS_POST){
             $this->model = D("AuthCate");
@@ -44,7 +44,7 @@ class AuthController extends PrivateController
     }
 
     //添加一级菜单
-    public function addMenu()
+    public function addmenu()
     {
         if(IS_POST){
             $this->model = D("AuthCate");
@@ -65,7 +65,7 @@ class AuthController extends PrivateController
     }
 
     //编辑一级菜单
-    public function editMenu()
+    public function editmenu()
     {
         if(IS_POST){
             $this->model = D("AuthCate");

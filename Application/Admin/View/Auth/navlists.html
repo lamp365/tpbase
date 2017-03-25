@@ -10,7 +10,7 @@
         <div class="panel-head"><strong>{$top_nav}</strong></div>
         <div class="padding border-bottom">
             <input type="button" class="button button-small checkall" name="checkall" checkfor="id" value="全选" />
-            <a href="__CONTROLLER__/addCate" class="button button-small border-blue">添加分类菜单</a>
+            <a href="__CONTROLLER__/addcate" class="button button-small border-blue">添加分类菜单</a>
             <input type="button" class="button button-small border-red" value="批量删除" />
         </div>
         <table class="table table-hover txt_center">
@@ -31,8 +31,8 @@
                     <td><strong>{$cate.name}</strong></td>
                     <td><input type="text" class="input" placeholder="排序" value="{$cate.sort}" style="width: 60px;text-align: center;margin: 0 auto;"/></td>
                     <td>
-                        <a class="button border-blue button-little" href="__CONTROLLER__/addMenu/id/{$cate.id}">添加菜单</a>
-                        <a class="button border-green button-little" href="__CONTROLLER__/addCate/id/{$cate.id}">修改菜单</a>
+                        <a class="button border-blue button-little" href="__CONTROLLER__/addmenu/id/{$cate.id}">添加菜单</a>
+                        <a class="button border-green button-little" href="__CONTROLLER__/addcate/id/{$cate.id}">修改菜单</a>
                         <a class="button border-red button-little" href="javascript:;" data-url="__CONTROLLER__/delMenu/id/{$son.id}" onclick="sure_del(this)">删除菜单</a>
                     </td>
                 </tr>
@@ -45,8 +45,8 @@
                     <td>{$son.name}</td>
                     <td><input type="text" class="input" placeholder="排序" value="{$son.sort}" style="width: 60px;text-align: center;margin: 0 auto;"/></td>
                     <td>
-                        <a class="button border-blue button-little" href="__CONTROLLER__/showSon/id/{$son.id}">查子菜单</a>
-                        <a class="button border-green button-little" href="__CONTROLLER__/editMenu/id/{$son.id}">修改菜单</a>
+                        <a class="button border-blue button-little" href="__CONTROLLER__/showson/id/{$son.id}">查子菜单</a>
+                        <a class="button border-green button-little" href="__CONTROLLER__/editmenu/id/{$son.id}">修改菜单</a>
                         <a class="button border-red button-little" href="javascript:;" data-url="__CONTROLLER__/delMenu/id/{$son.id}" onclick="sure_del(this)">删除菜单</a>
                     </td>
                 </tr>

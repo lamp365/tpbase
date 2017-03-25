@@ -2,8 +2,8 @@
     <div class="dialog-head">
         <span class="close rotate-hover"></span><strong><empty name="admin">添加<else/>修改</empty>管理员</strong>
     </div>
-    <form action="__CONTROLLER__/addRoot" method="post">
-    <div class="dialog-body one_main">
+    <form action="__CONTROLLER__/addRoot" method="post" class="one_main">
+    <div class="dialog-body">
         <div class="form-group">
             <div class="field">
                 <input type="text" class="input" value="{$admin.username}" name="username" size="30" placeholder="请输入用户名" />
@@ -33,41 +33,49 @@
         </div>
     </div>
 
-    <div class="dialog-body two_main" style="display: none">
-        <div class="form-group">
-            <div class="field">
-                <input type="password" class="input"  value="" name="password" size="30" placeholder="请输入旧密码" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="field">
-                <input type="password" class="input"  value="" name="password" size="30" placeholder="请输入新密码" />
-            </div>
-        </div>
-    </div>
     <div class="dialog-foot">
         <button class="button dialog-close">取消</button>
         <input type="hidden" name="id" value="{$admin.id}">
         <notempty name="admin">
-            <span class="button bg-yellow" data-main="one" onclick="show_main(this)">修改密码</span>
+            <span class="button bg-yellow" data-main="one" onclick="show_main(this,'one')">修改密码</span>
         </notempty>
         <button class="button bg-green" type="submit">确认</button>
     </div>
     </form>
+
+
+    <form action="__CONTROLLER__/addRoot" method="post" style="display: none" class="two_main">
+        <div class="dialog-body" >
+            <div class="form-group">
+                <div class="field">
+                    <input type="password" class="input"  value="" name="old_password" size="30" placeholder="请输入旧密码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="field">
+                    <input type="password" class="input"  value="" name="password" size="30" placeholder="请输入新密码" />
+                </div>
+            </div>
+        </div>
+        <div class="dialog-foot">
+            <button class="button dialog-close">取消</button>
+            <input type="hidden" name="id" value="{$admin.id}">
+            <notempty name="admin">
+                <span class="button bg-yellow" data-main="one" onclick="show_main(this,'two')">取消密码</span>
+            </notempty>
+            <button class="button bg-green" type="submit">确认</button>
+        </div>
+    </form>
+
 </div>
 <script>
-    function show_main(obj){
-        var main = $(obj).data('main');
+    function show_main(obj,main){
         if(main == 'one'){
             $(".one_main").hide();
             $(".two_main").show();
-            $(obj).html('取消密码');
-            $(obj).data('main','two');
         }else{
             $(".two_main").hide();
             $(".one_main").show();
-            $(obj).html('修改密码');
-            $(obj).data('main','one');
         }
     }
 </script>
