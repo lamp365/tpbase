@@ -10,13 +10,12 @@
 // +----------------------------------------------------------------------
 namespace Admin\Controller;
 
+use Think\Controller;
 use Think\Auth;
 
-class PrivateController extends PublicController
+class PrivateController extends Controller
 {
-    public  $model        = null;
     private $auth         = null;
-    public  $model_error  = null;
     private $group_id     = array();
 
     /**
@@ -26,7 +25,7 @@ class PrivateController extends PublicController
     public function _initialize()
     {
         //获取到当前用户所属所有分组拥有的权限id  数组形式
-        $this->group_id = self::_rules();
+        $this->group_id = $this->_rules();
         $UserName = session(C('USERNAME'));
         //检测后台管理员昵称是否存在，如果不等于空或者0则获取配置文件里定义的name名字并分配给首页
         if (!empty($UserName)) {
@@ -59,129 +58,109 @@ class PrivateController extends PublicController
     }
 
     /**
-     * 添加编辑操作
-     * @param int $returnData   0 为直接返回(新添加返回最后id 更新返回结果)  1为返回数据数组
-     * @return boolean
-     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
-     */
-    protected function _modelAdd($returnData = 0)
+     * 分组权限查询 获取用户所拥有的权限规则id数组
+     * @author kevin.liu www.dayblog.cn
+     * @return array $str 返回查询到的权限
+     **/
+    protected function _rules()
     {
-        if (!$this->model) {
-            $this->error('请传入操作表名');
+        $uid = session(C('ADMIN_UID'));
+        if (empty($uid)) {
+            skip_login();
         }
-
-        $data = $this->model->create();
-
-        if (empty($data)) {
-            $this->model_error = $this->model->getError();
-            return false;
-        }
-        if (empty($data['id'])) {
-            $id = $this->model->add();
-            if (!$id) {
-                $this->model_error = "添加操作失败";
-                return false;
+        //将uid定义为常量方便后期统一使用
+        defined("UID") or define("UID", $uid);
+        $str = S('group_rules' . $uid);
+        $str = '';
+        //定义用户-用户组model
+        $userGroupId = D('GroupAccess');
+        if ($str == false) {
+            //调用getOneField方法传参格式getOneField('字段','条件（数组）','指定条数或者true如果只查询一条就为空')
+            $where = array(
+                'status' => 1
+            );
+            if ($uid != C('ADMINISTRATOR')) {
+                //如果为普通管理员查看当前用户的数据
+                $map = array(
+                    'uid' => $uid
+                );
+                $group = $userGroupId->where($map)->getField('group_id', true);
+                if (empty($group)) {
+                    $this->error('访问权限不足');
+                }
+                //可以属于多个组
+                $where['id'] = array('in', $group);
             }
-            $data['last_id'] = $id;
-            $res = $id;
-        } else {
-            $res = $this->model->save();
-            if (!$res) {
-                $this->model_error = "更新操作失败";
-                return false;
+
+            $list = M('group')->where($where)->getField('rules', true);
+            if (empty($list[0])) {
+                $this->error('访问权限不足');
             }
+            $str     = implode(',', $list);
+            $strArr  = explode(',', $str);
+            $str_arr = array_unique($strArr);
+            S('group_rules' . $uid, $str_arr);
         }
-
-        if ($returnData == 1) {
-            return $data;
-        }
-       return $res;
+        return $str_arr;
     }
 
+
+
     /**
-     * 查询总条数
-     * @param array $where 查询的条件
-     * @param int $type 类型 :type =1 分页用 type=2普通查询
-     * @return mixed
-     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
-     */
-    protected function _modelCount($where = array(), $type = 1, $num = '')
+     * 网站菜单
+     * @author kevin.liu<www.dayblog.cn>
+     **/
+    public function _admin_menu()
     {
-        $count = $this->model-> where($where)->count();
-        if ($type == 1) {
-            if ($num == '') {
-                $num = C('PAGENUM');
+        $adminMenu = D('AdminMenu','Service');
+        $admin_menu_url = S('admin_menu_url' . UID);
+        $admin_menu_url = '';
+        //检测缓存是否存在,如果不存在则生成缓存
+        if ($admin_menu_url == false) {
+
+            //更据用户所具有的group_id找出auth_cate对应的name（url）地址
+            $cate_arr = array();
+            foreach($this->group_id as $cate_id){
+                $cate = M('auth_cate')->where("id={$cate_id}")->getField('name');
+                if(!empty($cate)){
+                    $cate_arr[$cate_id] = $cate;
+                }
             }
-            $Page = self::_page($count, $num);
-            return $Page;
-        }
-        return $count;
-    }
+            $cate_arr_flip = array_flip($cate_arr);
 
-    /**
-     * 查询多条数据
-     * @param array $where 查询的条件
-     * @param string $field 要显示的字段
-     * @param string $order 排序方式
-     * @param string $limit 分页
-     * @return array
-     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
-     */
-    protected function _modelSelect($where=array(), $field = "*", $order ='',  $limit = '')
-    {
-        if (!$this->model) {
-            $this->error("表名未定义");
-        }
 
-        $list = $this->model->where($where)->limit($limit)->order($order)->field($field)->select();
-        return $list;
-    }
+            //获取最顶部的菜单
+            $admin_menu_url = $adminMenu->adminMenuEnum();
 
-    /**
-     * 删除一条数据 或者多条数据
-     * @param array $where
-     * @param null $tableName
-     * @return bool
-     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
-     */
-    protected function _modelDelete($where = array(), $tableName = null)
-    {
-        if (!$this->model) {
-            $this->error("表名未定义");
-        }
-        //条件
-        if(empty($where)){
-            $this->model_error = '条件不能为空！';
-            return false;
-        }
-        if(is_null($tableName)){
-            $tableName = $this;
-        }else{
-            $tableName = M($tableName);
-        }
+            //获取左侧一级菜单
+            foreach($admin_menu_url as $key => &$admin_val){
+                $leftMenu  = $adminMenu->adminLeftMenu($key);
+                $_leftMenu = array();
+                //如果权限中没有该左侧地址菜单  则进行去掉该顶部菜单
+                if(empty($leftMenu)){
+                    unset($admin_menu_url[$key]);
+                }else{
+                    //否则有再权限中的 左侧菜单要提取出来  并找出它的下一级子菜单
+                    foreach($leftMenu as  $one_menu){
+                        if(in_array($one_menu['url'],$cate_arr)){
+                            $cate_id = $cate_arr_flip[$one_menu['url']];
+                            //查找它的子分类
+                            $one_menu['son'] = M('auth_cate')->where("pid={$cate_id}")->field('name,title,id')->order('sort desc')->select();
 
-        $res = $tableName -> where($where)->delete();
-        if(!$res){
-            $this->model_error = '删除失败';
-            return false;
-        }else{
-           return true;
+                            $_leftMenu[$cate_id] = $one_menu;
+                        }
+                    }
+                    if(empty($_leftMenu)){
+                        //如果全部都移除掉了 说明顶部菜单中没有一个左侧菜单，去掉该顶部菜单
+                        unset($admin_menu_url[$key]);
+                    }else{
+                        $admin_val['son'] = $_leftMenu;
+                    }
+                }
+            }
+            S('admin_menu_url' . UID,$admin_menu_url);
         }
-    }
-
-    /**
-     * 查询一条数据
-     * @param array $where 条件
-     * @return mixed
-     * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
-     */
-    protected function _modelFind($where, $field = '*')
-    {
-        if (!$this->model) {
-            $this->error("表名未定义");
-        }
-        $info = $this->model->where($where)->field($field)->find();
-        return $info;
+        $this->assign('admin_menu_url', $admin_menu_url);
     }
 
 
@@ -287,96 +266,7 @@ class PrivateController extends PublicController
         return $butArr;
     }
 
-    /**
-     * page 分页
-     * @param int $count 总条数
-     * @param int $num 展示条数
-     * @return array 返回组装好的结果
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    protected function _page($count, $num)
-    {
-        $showPageNum = 15;
-        $totalPage = ceil($count / $num);
-        $currentPage = I('post.currentPage', 1, 'intval');
-        $searchValue = I('post.searchValue', '');
-        if ($currentPage > $totalPage) {
-            $currentPage = $totalPage;
-        }
-        if ($currentPage < 1) {
-            $currentPage = 1;
-        }
-        $list = array(
-            'pageNum'     => $num,
-            'showPageNum' => $showPageNum,
-            'currentPage' => $currentPage,
-            'totalPage'   => $totalPage,
-            'limit'       => ($currentPage - 1) * $num . "," . $num,
-            'searchValue' => $searchValue,
-            'pageUrl'     => ''
-        );
-        return $list;
-    }
 
-
-
-
-    /**
-     * 网站菜单
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    public function _admin_menu()
-    {
-        $adminMenu = D('AdminMenu','Service');
-        $admin_menu_url = S('admin_menu_url' . UID);
-        $admin_menu_url = '';
-        //检测缓存是否存在,如果不存在则生成缓存
-        if ($admin_menu_url == false) {
-
-            //更据用户所具有的group_id找出auth_cate对应的name（url）地址
-            $cate_arr = array();
-            foreach($this->group_id as $cate_id){
-                $cate = M('auth_cate')->where("id={$cate_id}")->getField('name');
-                if(!empty($cate)){
-                    $cate_arr[$cate_id] = $cate;
-                }
-            }
-            $cate_arr_flip = array_flip($cate_arr);
-
-
-            //获取最顶部的菜单
-            $admin_menu_url = $adminMenu->adminMenuEnum();
-
-            //获取左侧一级菜单
-            foreach($admin_menu_url as $key => &$admin_val){
-                $leftMenu  = $adminMenu->adminLeftMenu($key);
-                $_leftMenu = array();
-                //如果权限中没有该左侧地址菜单  则进行去掉该顶部菜单
-                if(empty($leftMenu)){
-                    unset($admin_menu_url[$key]);
-                }else{
-                    //否则有再权限中的 左侧菜单要提取出来  并找出它的下一级子菜单
-                    foreach($leftMenu as  $one_menu){
-                        if(in_array($one_menu['url'],$cate_arr)){
-                            $cate_id = $cate_arr_flip[$one_menu['url']];
-                            //查找它的子分类
-                            $one_menu['son'] = M('auth_cate')->where("pid={$cate_id}")->field('name,title,id')->order('sort desc')->select();
-
-                            $_leftMenu[$cate_id] = $one_menu;
-                        }
-                    }
-                    if(empty($_leftMenu)){
-                        //如果全部都移除掉了 说明顶部菜单中没有一个左侧菜单，去掉该顶部菜单
-                        unset($admin_menu_url[$key]);
-                    }else{
-                        $admin_val['son'] = $_leftMenu;
-                    }
-                }
-            }
-            S('admin_menu_url' . UID,$admin_menu_url);
-        }
-        $this->assign('admin_menu_url', $admin_menu_url);
-    }
 
     /**
      * 分类列表
@@ -463,16 +353,5 @@ class PrivateController extends PublicController
         }
         $this->error($this->model->getError());
     }
-	
-	/**
-	 *  param 跳转地址
-	 * author kevin.liu<www.dayblog.cn>
-	 **/
-	protected function urlRedirect($url = '/info'){
-		$modules = I('get.module');
-        if(!empty($modules)){
-            delTemp();
-        }
-        $this -> redirect(MODULE_NAME.'/'.CONTROLLER_NAME.$url);
-	}
+
 }

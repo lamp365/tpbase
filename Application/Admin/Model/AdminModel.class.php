@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Model;
-use Think\Model;
-class AdminModel extends Model
+
+class AdminModel extends PrivateModel
 {
     //self::MODEL_UPDATE
     //self::MODEL_INSERT

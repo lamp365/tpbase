@@ -14,13 +14,13 @@ class UserController extends PrivateController
 
     public function rootlists()
     {
-        $this->model = D('Admin');
+        $adminModel = D('Admin');
         //分配按钮
         $where = array(
             'status' => 1,
         );
-        $list    = self::_modelCount($where);
-        $dataArr = self::_modelSelect($where, "id,username,name,phone,last_time,email,last_ip,login_num",'sort DESC', $list['limit']);
+        $list    = $adminModel->_modelCount($where);
+        $dataArr = $adminModel->_modelSelect($where, "id,username,name,phone,last_time,email,last_ip,login_num",'sort DESC', $list['limit']);
         $this->assign('dataArr',$dataArr);
         $this->display();
     }
@@ -46,17 +46,17 @@ class UserController extends PrivateController
                     $this->error("操作失败！");
                 }
             }else{
-                $this->model = D("Admin");
-                $res = $this->_modelAdd();
+                $adminModel = D("Admin");
+                $res = $adminModel->_modelAdd();
                 if($res){
                     if(empty(I('post.id'))){
                         //新添加的
                         $passwd = md5Encrypt(I('post.password'),$res);
-                        $this->model->where("id={$res}")->save(array('password'=>$passwd));
+                        $adminModel->where("id={$res}")->save(array('password'=>$passwd));
                     }
                     $this->success("操作成功！",getU('rootlists'));
                 }else{
-                    $this->error($this->model_error);
+                    $this->error($adminModel->getError());
                 }
             }
         }

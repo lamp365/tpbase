@@ -44,24 +44,36 @@
  * @author kevin.liu
  **/
 function checkcode($code,$verifyName='code'){
-    $str =strtolower($code);
+    $str = strtolower($code);
     return session($verifyName) == MD5($str);
 }
 
-function checkMenuIsOn($url,$type = 'left'){
-    $curent = MODULE_NAME.'/'. CONTROLLER_NAME . '/' . ACTION_NAME;
-    if($type == 'left'){
-        if($url == $curent){
+function checkMenuIsOn($url,$type = 'left')
+{
+    $curent = MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
+    if ($type == 'left') {
+        if ($url == $curent) {
             return true;
         }
     }
-    if($type == 'top'){
-        if($url == MODULE_NAME){
+    if ($type == 'top') {
+        if ($url == MODULE_NAME) {
             return true;
         }
     }
     return false;
 }
+
+/**
+ * 跳转到登陆
+ */
+function skip_login(){
+    session(C('ADMIN_UID'), null);
+    $url = getU("Admin/Public/login");
+    header("location:{$url}");
+}
+
+
 /**
  * 大小写转换
  * @param string $str 要转换的字符串

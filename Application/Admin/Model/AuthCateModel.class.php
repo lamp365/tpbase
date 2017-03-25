@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Model;
-use Think\Model;
-class AuthCateModel extends Model
+
+class AuthCateModel extends PrivateModel
 {
     protected $_validate = array(
         array('title', 'require', '标题必须填写'), //默认情况下用正则进行验证
