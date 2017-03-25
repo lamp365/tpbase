@@ -44,16 +44,7 @@ class AdminController extends PrivateController
         $this->display();
     }
 
-    /**
-     * 权限规则列表
-     * @author kevin.liu
-     * @time 2015-12-09
-     */
-    public function auth()
-    {
-        self::_cateList('AuthCate', '权限管理', $sort='sort DESC',$cache='auth_cate_list');
-        $this->display();
-    }
+
     /******************以下为操作方法**************/
     /**
      * group 后台用户分组添加编辑
@@ -77,66 +68,7 @@ class AdminController extends PrivateController
         $this->display();
     }
 
-    /**
-     * authinfo 显示权限分类信息
-     * @author kevin.liu
-     * @time 2015-12-8
-     **/
-    public function authinfo()
-    {
-        $this->model = D('AuthCate');
-        $id = I('get.id', 0, 'intval');
-        if($id != 0){
-            $where = array(
-                'id'    => $id,
-                'status' => 1
-            );
-            $info = self::_oneInquire($where, 2);
-        }else{
-            $info['id'] = 0;
-        }
 
-        if(self::_is_check_url('authedit') && $info['level'] != 2){
-             $info['butadd'] = self::_catebut('authedit', '添加权限', $info['id']);
-        }
-        if(self::_is_check_url('authdel')){
-            $info['butdel'] = self::_catebut('authdel', '删除权限', $info['id'], '您确认要删除该权限吗?', 2);
-        }
-        $this->assign('info', $info);
-        $this->display();
-    }
-
-    /**
-     * group 后台用户分组添加编辑
-     * @author kevin.liu
-     * @time 2015-12-05
-     **/
-    public function useredit()
-    {
-        $this->model = D('Admin');
-        if(IS_POST){
-            self::_modelAdd('user');
-        }
-        $id = I('get.id', 0, 'intval');
-        if($id != 0){
-            $where = array(
-                'id'     => $id,
-                'status' => 1
-            );
-            self::_oneInquire($where);
-            $where = array(
-                'uid' => $id
-            );
-            $group_id = M('group_access')->where($where)->getField('group_id', true);
-            $this->assign('group_id', $group_id);
-        }
-        $where = array(
-            'status' => 1
-        );
-        $list = D('Group')->dataSet($where, 'sort DESC', 'id,title');
-        $this->assign('list', $list);
-        $this->display();
-    }
 
     /**
      * group 后台用户分组删除操作

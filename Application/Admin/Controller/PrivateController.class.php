@@ -60,13 +60,11 @@ class PrivateController extends PublicController
 
     /**
      * 添加编辑操作
-     * @param string $model 要操作的表
-     * @param string $url 要跳转的地址
-     * @param int $typeid 0 为直接返回 1为返回数组
+     * @param int $returnData   0 为直接返回(新添加返回最后id 更新返回结果)  1为返回数据数组
      * @return boolean
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _modelAdd($typeid = 0)
+    protected function _modelAdd($returnData = 0)
     {
         if (!$this->model) {
             $this->error('请传入操作表名');
@@ -84,6 +82,7 @@ class PrivateController extends PublicController
                 $this->model_error = "添加操作失败";
                 return false;
             }
+            $data['last_id'] = $id;
             $res = $id;
         } else {
             $res = $this->model->save();
@@ -93,7 +92,7 @@ class PrivateController extends PublicController
             }
         }
 
-        if ($typeid == 1) {
+        if ($returnData == 1) {
             return $data;
         }
        return $res;
@@ -101,7 +100,6 @@ class PrivateController extends PublicController
 
     /**
      * 查询总条数
-     * @param string $model 要操作的表
      * @param array $where 查询的条件
      * @param int $type 类型 :type =1 分页用 type=2普通查询
      * @return mixed
@@ -122,37 +120,38 @@ class PrivateController extends PublicController
 
     /**
      * 查询多条数据
-     * @param string $model 要操作的表
      * @param array $where 查询的条件
-     * @param string $limit 分页
-     * @param string $order 排序方式
      * @param string $field 要显示的字段
+     * @param string $order 排序方式
+     * @param string $limit 分页
      * @return array
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _modelSelect($where, $field = "*", $order,  $limit = '')
+    protected function _modelSelect($where=array(), $field = "*", $order ='',  $limit = '')
     {
         if (!$this->model) {
             $this->error("表名未定义");
         }
+
         $list = $this->model->where($where)->limit($limit)->order($order)->field($field)->select();
         return $list;
     }
 
     /**
      * 删除一条数据 或者多条数据
-     * @param int $type 如果为1则表示 删除多条 where in   0则表示单条
-     * @return string 返回执行结果
+     * @param array $where
+     * @param null $tableName
+     * @return bool
      * @author kevin.liu<www.dayblog.cn>  <791845283@qq.com>
      */
-    protected function _modelDelete($key = 'id', $type = 0, $tableName = null)
+    protected function _modelDelete($where = array(), $tableName = null)
     {
         if (!$this->model) {
             $this->error("表名未定义");
         }
-        $id = I('get.id', 0, 'intval');
-        if(empty($id)){
-            $this->model_error = '参数错误';
+        //条件
+        if(empty($where)){
+            $this->model_error = '条件不能为空！';
             return false;
         }
         if(is_null($tableName)){
@@ -161,12 +160,6 @@ class PrivateController extends PublicController
             $tableName = M($tableName);
         }
 
-        $where['status'] =1;
-        if($type){
-            $where[$key] = array('in',$id);
-        }else{
-            $where[$key] = $id;
-        }
         $res = $tableName -> where($where)->delete();
         if(!$res){
             $this->model_error = '删除失败';
@@ -339,6 +332,7 @@ class PrivateController extends PublicController
         $admin_menu_url = '';
         //检测缓存是否存在,如果不存在则生成缓存
         if ($admin_menu_url == false) {
+
             //更据用户所具有的group_id找出auth_cate对应的name（url）地址
             $cate_arr = array();
             foreach($this->group_id as $cate_id){
@@ -348,6 +342,7 @@ class PrivateController extends PublicController
                 }
             }
             $cate_arr_flip = array_flip($cate_arr);
+
 
             //获取最顶部的菜单
             $admin_menu_url = $adminMenu->adminMenuEnum();

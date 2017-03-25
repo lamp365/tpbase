@@ -116,21 +116,6 @@ class AdminModel extends Model
         return $data;
     }
 
-    public function delUserInfo($id = 0)
-    {
-        $res = $this->del($id);
-        if(!$res){
-            $this->rollback();
-            return false;
-        }
-        $res = $this->del($id, 'admin_info');
-        if(!$res){
-            $this->rollback();
-            return false;
-        }
-        return true;
-    }
-
     /**
      * alogin　登录操作
      * @reutrn string
@@ -139,42 +124,33 @@ class AdminModel extends Model
      **/
     public function login()
     {
-        //6da8b75d3ffb1f70805d374f63252bc4
         $data = $this->create($_POST, 2);
         if(empty($data)){
             return false;
         }
         $userWhere = array(
-            'a.username' => trim($data['username']),
-            'a.status'   => 1,
-            'c.type'     => 0
-        );
-        $chars = M()
-            ->table('__ADMIN__ a')
-            ->join('LEFT JOIN __CHAR__ c ON a.id=c.id')
-            ->where($userWhere)
-            ->getField('chars');
-        if(!$chars){
-            $this->error = '登陆出错,用户名或者密码错误';
-            return false;
-        }
-        $where = array(
-            'username' => $data['username'],
-            'password' => md5Encrypt(trim($data['password']), $chars),
+            'username' => trim($data['username']),
             'status'   => 1
         );
-        $res = $this->field('id,username,status,name')->where($where)->find();
+
+        $res = M('admin') ->where($userWhere)->find();
         if($res){
+            $password = md5Encrypt(trim($data['password']), $res['id']);
+            if($password != $res['password']){
+                $this->error = "密码输入有误！";
+                return false;
+            }
             $lastData = array(
                 'last_time' => time(),
-                'last_ip'   => get_client_ip()
+                'last_ip'   => get_client_ip(),
+                'login_num' => $res['login_num']+1
             );
-            $this->where($where)->save($lastData);
+            $this->where($userWhere)->save($lastData);
             session(C('ADMIN_UID'), $res['id']);
             session(C('USERNAME'), $res['name']);
             return $res;
         }else{
-            $this->error = '用户名或者密码错误';
+            $this->error = '用户不存在！';
             return false;
         }
     }

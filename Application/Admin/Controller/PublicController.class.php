@@ -217,6 +217,7 @@ class PublicController extends Controller
                 //可以属于多个组
 				$where['id'] = array('in', $group);
             }
+
             $list = M('group')->where($where)->getField('rules', true);
             if (empty($list[0])) {
                 $this->error('访问权限不足');

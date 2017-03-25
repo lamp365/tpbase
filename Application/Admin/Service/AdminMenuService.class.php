@@ -33,10 +33,10 @@ class AdminMenuService extends Model{
     public function adminLeftMenu($key){
         //模块 控制器
         $data =  array(
-            'system_mange' =>
+            'system_mange' =>       //系统管理
                 array(
                     array(
-                        'name' => '微信设置',
+                        'name' => '微信管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Weixin'
                     ),
@@ -46,22 +46,17 @@ class AdminMenuService extends Model{
                         'url'  => 'Admin/Config'
                     ),
                     array(
-                        'name' => '支付方式',
+                        'name' => '菜单管理',
                         'icon' => 'icon-home',
-                        'url'  => 'Admin/Payway'
+                        'url'  => 'Admin/Menus'
                     ),
                     array(
                         'name' => '数据管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Database'
-                    ),
-                    array(
-                        'name' => '后台主页',
-                        'icon' => 'icon-home',
-                        'url'  => 'Admin/Admin'
                     )
                 ),
-            'user_mange' =>
+            'user_mange' =>         //用户管理
                 array(
                     array(
                         'name' => '会员管理',

@@ -25,7 +25,7 @@ class AuthController extends PrivateController
             $this->model = D("AuthCate");
             $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
             $_POST['name']  = rtrim($name,'/');
-            $_POST['level'] = 2;
+            $_POST['level'] = 1;
             $res = $this->_modelAdd();
             if($res){
                 $this->success("操作成功",getU("navlists"));
