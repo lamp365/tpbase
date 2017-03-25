@@ -46,6 +46,38 @@ function delTemp($dir = TEMP_PATH){
 }
 
 /**
+ * 表单验证，防止重复提交
+ * @return bool
+ */
+function formCheckToken(){
+    if(C('TOKEN_ON')){
+        $name   = C('TOKEN_NAME', null, '__hash__');
+        if(isset($_REQUEST[$name])){
+            if(!isset($_SESSION[$name])){   // 令牌数据无效
+                return false;
+            }
+
+            // 令牌验证
+            list($key,$value)  =  explode('_',$_REQUEST[$name]);
+            if(isset($_SESSION[$name][$key]) && $value && $_SESSION[$name][$key] == $value) { // 防止重复提交
+                unset($_SESSION[$name][$key]); // 验证完成销毁session
+                return true;
+            }
+
+            // 开启TOKEN重置
+            if(C('TOKEN_RESET'))
+                unset($_SESSION[$name][$key]);
+
+            return false;
+
+        }
+
+    }
+    return true;
+}
+
+
+/**
  * 将key相同的数组合并为新的数组
  * @param array $arr 接收要组装的二维数组
  * @author kevin.liu

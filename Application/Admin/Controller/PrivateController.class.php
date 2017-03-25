@@ -24,6 +24,10 @@ class PrivateController extends Controller
      **/
     public function _initialize()
     {
+        // 表单验证，防止重复提交
+        if(formCheckToken()){
+            $this->error("禁止重复提交表单！");
+        }
         //获取到当前用户所属所有分组拥有的权限id  数组形式
         $this->group_id = $this->_rules();
         $UserName = session(C('USERNAME'));

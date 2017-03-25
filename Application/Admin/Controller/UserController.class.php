@@ -15,7 +15,6 @@ class UserController extends PrivateController
     public function rootlists()
     {
         $adminModel = D('Admin');
-        //分配按钮
         $where = array(
             'status' => 1,
         );
@@ -47,6 +46,7 @@ class UserController extends PrivateController
                 }
             }else{
                 $adminModel = D("Admin");
+                //分配按钮
                 $res = $adminModel->_modelAdd();
                 if($res){
                     if(empty(I('post.id'))){

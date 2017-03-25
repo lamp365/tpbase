@@ -15,7 +15,8 @@ class AdminModel extends PrivateModel
      **/
     protected $_validate = array(
         array('username', 'require', '帐号必须填写'),
-        array('username','checkUnique','帐号名称已经存在！',0,'unique',self::MODEL_BOTH,'callback'),
+        array('username','checkUnique','帐号名称已经存在！',0,'unique',self::MODEL_UPDATE,'callback'),
+        array('username','checkUnique','帐号名称已经存在！',0,'unique',self::MODEL_INSERT,'callback'),
         array('password', 'require', '密码必须填写'),
         array('name', 'require', '姓名必须填写'),
         array('email', 'require', '邮件必须填写'),
@@ -60,18 +61,15 @@ class AdminModel extends PrivateModel
      **/
     public function login()
     {
-        $data = $this->create($_POST, 2);
-        if(empty($data)){
-            return false;
-        }
         $userWhere = array(
-            'username' => trim($data['username']),
+            'username' => trim(I('post.username')),
             'status'   => 1
         );
 
-        $res = M('admin') ->where($userWhere)->find();
+        $res = $this->where($userWhere)->find();
+
         if($res){
-            $password = md5Encrypt(trim($data['password']), $res['id']);
+            $password = md5Encrypt(trim(I('post.username')), $res['id']);
             if($password != $res['password']){
                 $this->error = "密码输入有误！";
                 return false;
