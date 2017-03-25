@@ -22,15 +22,15 @@ class AuthController extends PrivateController
     public function addcate()
     {
         if(IS_POST){
-            $this->model = D("AuthCate");
+            $authMode = D("AuthCate");
             $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
             $_POST['name']  = rtrim($name,'/');
             $_POST['level'] = 1;
-            $res = $this->_modelAdd();
+            $res = $authMode->_modelAdd();
             if($res){
                 $this->success("操作成功",getU("navlists"));
             }else{
-                $this->error($this->model_error);
+                $this->error($authMode->getError());
             }
         }
 
@@ -47,15 +47,15 @@ class AuthController extends PrivateController
     public function addmenu()
     {
         if(IS_POST){
-            $this->model = D("AuthCate");
+            $authMode = D("AuthCate");
             $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
             $_POST['name']  = rtrim($name,'/');
             $_POST['level'] = 2;
-            $res = $this->_modelAdd();
+            $res = $authMode->_modelAdd();
             if($res){
                 $this->success("操作成功",getU("navlists"));
             }else{
-                $this->error($this->model_error);
+                $this->error($authMode->getError());
             }
         }
         $id   = I("get.id");
@@ -68,15 +68,15 @@ class AuthController extends PrivateController
     public function editmenu()
     {
         if(IS_POST){
-            $this->model = D("AuthCate");
+            $authMode = D("AuthCate");
             $name = I('post.module').'/'.I('post.controller').'/'.I('post.method');
             $_POST['name']  = rtrim($name,'/');
             $_POST['level'] = 2;
-            $res = $this->_modelAdd();
+            $res = $authMode->_modelAdd();
             if($res){
                 $this->success("操作成功",getU("navlists"));
             }else{
-                $this->error($this->model_error);
+                $this->error($authMode->getError());
             }
         }
         $auth = M('auth_cate');
