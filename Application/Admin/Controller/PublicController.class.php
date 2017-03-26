@@ -80,7 +80,7 @@ class PublicController extends Controller
      **/
     public function login()
     {
-        if(session(C('ADMIN_UID'))) $this->redirect('Index/index');
+        if(session(C('ADMIN_UID'))) $this->redirect('Admin/index');
         $this->display();
     }
 
@@ -93,7 +93,7 @@ class PublicController extends Controller
         $model = D('Admin');
         $data = $model->login();
         if ($data) {
-            $this->success('登录成功', getU('Index/index'));
+            $this->success('登录成功', getU('Admin/index'));
         }
         $this->error($model->getError());
     }

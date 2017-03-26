@@ -2,7 +2,6 @@
 /**
  * randNum 生成随机数
  * @author kevin.liu
- * @time 2015-08-14
  **/
 function randNum(){
     return mt_rand(1000,99999999);
@@ -13,7 +12,6 @@ function randNum(){
  * @param string $str 要加密的字符串
  * @return string $chars 加密后的字符串
  * @author kevin.liu
- * @time 2015-04-13
  **/
 function md5Encrypt($str='',$rand=''){
     $hash = $str.$rand;
@@ -76,6 +74,45 @@ function formCheckToken(){
     return true;
 }
 
+/**
+ * 无限分类tree
+ * @param $list 分类数据
+ * @param int $pid
+ * @param int $level
+ * @param string $html
+ * @return array
+ */
+function catTree(&$list,$pid=0,$level=1,$html='--'){
+    static $tree = array();
+    foreach($list as $v){
+        if($v['pid'] == $pid){
+            $v['sort'] = $level;
+            $v['html'] = str_repeat($html,$level);
+            $tree[] = $v;
+            catTree($list,$v['id'],$level+1,$html);
+        }
+    }
+    return $tree;
+}
+
+/**
+ * @param $list 空数组
+ * @param $data  分类数据
+ * @param int $pid
+ * @param int $level
+ */
+function catTree2(&$list,$data, $pid = 0, $level = 1)
+{
+    if (!is_null($pid)) {
+        foreach ($data as $tmp) {
+            if ($tmp['pid'] == $pid) {
+                $list[$tmp['id']]['main']  = $tmp;
+                $list[$tmp['id']]['level'] = $level;
+                catTree2($list[$tmp['id']]['child'], $data,$tmp['id'], $level + 1);
+            }
+        }
+    }
+}
 
 /**
  * 将key相同的数组合并为新的数组

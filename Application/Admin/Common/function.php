@@ -59,7 +59,13 @@ function skip_login(){
     header("location:{$url}");
 }
 
-
+function ruleIsCheck($id,$rule_idArr){
+    if(in_array($id,$rule_idArr)){
+        return 'checked';
+    }else{
+        return '';
+    }
+}
 /**
  * 大小写转换
  * @param string $str 要转换的字符串

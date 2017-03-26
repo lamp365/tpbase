@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="Admin@Public:top"/>
+    <title>{$top_nav}</title>
+    <style>
+        .rule_box{
+            margin-bottom: 20px;
+            border: 1px solid #ebebeb;
+            border-radius: 4px;
+        }
+        .rule_box .mark{
+            float: right;
+            margin-right: 15px;
+            font-size: 18px;
+            display: inline-block;
+            width: 88%;
+            text-align: right;
+        }
+        .up_line{
+            line-height: 36px;;
+        }
+        .down_line{
+            line-height: 22px;;
+        }
+        .rule_box dt{
+            background-color: #ECECEC;
+            padding-left: 10px;
+            height: 30px;
+            line-height: 30px;
+            font-weight: bold;
+            border-bottom: 1px solid #ebebeb;
+            cursor: pointer;
+        }
+        .rule_box dd{
+            padding-left: 28px;
+            line-height: 30px;
+        }
+        .rule_box dd .son{
+            margin-left: 20px;
+        }
+        .rule_box dd .son label{
+            margin: 0px 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body style="background-color: #ffffff">
+<div class="container">
+    <h3><empty name="rules_arr">设置<else/>修改</empty>权限</h3><br/>
+    <div style="display: block;overflow: hidden;margin-bottom: 15px;">
+        <div class="x2">
+            角色名：<span class="button button-little bg-green">{$rules_arr.title}</span>
+        </div>
+
+        <div class="field x5">
+            <div class="button-group radio choose_all">
+                <label class="button active button-little">
+                    <input  value="1" checked="checked" type="radio"><span class="icon icon-check text-green"></span> 全选
+                </label>
+                <label class="button button-little">
+                    <input value="2" type="radio"><span class="icon icon-times"></span> 全否
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <form action="__CONTROLLER__/groupaccess" method="post">
+    <volist name="all_rules_arr" id="all_rules_row">
+    <dl class="rule_box">
+        <dt>
+            <label><input {$all_rules_row.main.id|ruleIsCheck=###,$check_rule} type="checkbox" value="{$all_rules_row.main.id}" name="ids[]" class="_first_cate"> {$all_rules_row.main.title}</label> <span class="icon-sort-up mark up_line"></span>
+        </dt>
+        <dd>
+
+            <volist name="all_rules_row.child" id="rules_child">
+                <div class="rule_row">
+                    <div class="parent"> <label><input {$rules_child.main.id|ruleIsCheck=###,$check_rule} type="checkbox" class="_second_cate" value="{$rules_child.main.id}" name="ids[]"> {$rules_child.main.title}</label></div>
+                    <div class="son">
+
+                        <volist name="rules_child.child" id="rules_son">
+                            <label><input {$rules_son.main.id|ruleIsCheck=###,$check_rule} type="checkbox" class="_third_cate" value="{$rules_son.main.id}" name="ids[]"> {$rules_son.main.title}</label>
+                        </volist>
+
+                    </div>
+                </div>
+            </volist>
+
+        </dd>
+    </dl>
+    </volist>
+        {__TOKEN__}
+        <input type="hidden" name="id" value="{$rules_arr.id}">
+        <button class="button bg-blue" type="submit">确定分配</button>
+        <button class="button bg-green" onclick="$.redirect()">返回上级</button>
+    </form>
+    <br/>
+</div>
+
+<script>
+    $(".rule_box dt .mark").click(function(){
+        var obj = this;
+        if($(obj).hasClass('up_line')){
+            $(obj).removeClass('icon-sort-up');
+            $(obj).addClass('icon-sort-down');
+            $(obj).removeClass('up_line');
+            $(obj).addClass('down_line');
+            $(obj).parent().next().slideUp();
+        }else if($(obj).hasClass('down_line')){
+            $(obj).removeClass('icon-sort-down');
+            $(obj).addClass('icon-sort-up');
+            $(obj).removeClass('down_line');
+            $(obj).addClass('up_line');
+            $(obj).parent().next().fadeIn();
+        }
+    });
+
+    $("._first_cate").click(function(){
+        var isCheck = this.checked;
+        if(isCheck){
+            $(this).closest(".rule_box").find("input").prop("checked",true);
+        }else{
+            $(this).closest(".rule_box").find("input").prop("checked",false);
+        }
+    });
+    $("._second_cate").click(function(){
+        var isCheck = this.checked;
+        if(isCheck){
+            //二级有一个 中，则父级就要选中
+            $(this).closest(".rule_box").find("dt input").prop("checked",true);
+            $(this).closest(".rule_row").find(".son input").prop("checked",true);
+        }else{
+            $(this).closest(".rule_row").find(".son input").prop("checked",false);
+        }
+    });
+
+    $("._third_cate").click(function(){
+        var isCheck = this.checked;
+        if(isCheck){
+            //三级有一个 中，则父级就要选中
+            $(this).closest(".rule_box").find("dt input").prop("checked",true);
+            $(this).closest(".rule_row").find(".parent input").prop("checked",true);
+        }else{
+
+        }
+    });
+
+    //全选 与全不选
+    $(".choose_all").click(function(){
+        var key = $(this).find(".active input").val();
+        if(key == 1){
+            $(".rule_box").each(function(){
+                $(this).find("input").prop("checked",true);
+            })
+        }else{
+            $(".rule_box").each(function(){
+                $(this).find("input").prop("checked",false);
+            })
+        }
+    })
+</script>
+</body>
+</html>

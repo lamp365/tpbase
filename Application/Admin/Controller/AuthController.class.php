@@ -206,6 +206,36 @@ class AuthController extends PrivateController
 
     public function groupaccess()
     {
-        ppd('是哦权');
+        if(IS_POST){
+            if(empty(I("post.ids"))){
+                $_POST['rules'] = '';
+            }else{
+                $_POST['rules'] = implode(',',I("post.ids"));
+            }
+
+            $group = D('Group');
+            $res   = $group->_modelAdd();
+            if($res){
+                $this->success('分配权限成功！');
+            }else{
+                $this->error($group->getError());
+            }
+        }
+
+        $id = I('get.id',0);
+        $rules_arr = D("Group")->_modelFind("id={$id}","id,title,rules");
+
+        $all_rules = D("AuthCate")->_modelSelect(array('status'=>1),"id,pid,title","sort desc");
+        $all_rules_arr = array();
+        //无限分类
+        catTree2($all_rules_arr,$all_rules);
+
+        $check_rule = empty($rules_arr['rules'])? array() : explode(",",$rules_arr['rules']);
+
+
+        $this->assign('rules_arr',$rules_arr);
+        $this->assign('all_rules_arr',$all_rules_arr);
+        $this->assign('check_rule',$check_rule);
+        $this->display();
     }
 }
