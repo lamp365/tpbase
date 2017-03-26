@@ -1,0 +1,31 @@
+<div class="dialog">
+    <div class="dialog-head">
+        <span class="close rotate-hover"></span><strong><empty name="group">添加<else/>修改</empty>分组</strong>
+    </div>
+    <form action="__CONTROLLER__/addgroup" method="post" class="one_main">
+        <div class="dialog-body">
+            <div class="form-group">
+                <div class="field">
+                    <input type="text" class="input"  value="{$group.title}" name="title" size="30" placeholder="请输入分组名称" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="field">
+                    <input type="text" class="input"  value="{$group.desc}" name="desc" size="30" placeholder="请输入简介" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="field">
+                    <input type="number" class="input"  value="{$group.sort}" name="sort" size="30" placeholder="请设置排序" />
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog-foot">
+            <button class="button dialog-close">取消</button>
+            <input type="hidden" name="id" value="{$group.id}">
+            <button class="button bg-green" type="submit">确认</button>
+        </div>
+        {__TOKEN__}
+    </form>
+</div>

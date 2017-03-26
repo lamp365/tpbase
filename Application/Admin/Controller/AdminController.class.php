@@ -16,70 +16,7 @@ class AdminController extends PrivateController
     }
 
 
-    /**
-     * group 后台用户分组
-     * @author kevin.liu
-     * @time 2015-12-05
-     **/
 
-    public function group()
-    {
-        $this->model = D('Group');
-        $but = array(
-            array(
-                'url'   => 'groupedit',
-                'name'  => '添 加',
-                'title' => '添加管理分组',
-                'type'  => 1
-            ),
-        );
-        self::isBut($but);
-        $where = array(
-            'status' => 1
-        );
-        self::_modelCount($where);
-        $list = S('group_list');
-        $list = self::_modelSelect($where, 'sort DESC', 'title,id');
-        $this->assign('list', $list);
-        $this->display();
-    }
-
-
-    /******************以下为操作方法**************/
-    /**
-     * group 后台用户分组添加编辑
-     * @author kevin.liu
-     * @time 2015-12-05
-     **/
-    public function groupedit()
-    {
-        $this->model = D('Group');
-        if(IS_POST){
-            self::_modelAdd('group');
-        }
-        $id = I('get.id', 0, 'intval');
-        if($id != 0){
-            $where = array(
-                'id'     => $id,
-                'status' => 1
-            );
-            self::_oneInquire($where);
-        }
-        $this->display();
-    }
-
-
-
-    /**
-     * group 后台用户分组删除操作
-     * @author kevin.liu
-     * @time 2015-12-05
-     **/
-    public function groupdel()
-    {
-        $this->model = D('Group');
-        self::_del('group');
-    }
 
     /**
      * 权限添加编辑
@@ -172,32 +109,4 @@ class AdminController extends PrivateController
     }
 
 
-    /**
-     * 删除权限
-     * @author kevin.liu
-     * @time 2015-12-08
-     */
-    public function authdel()
-    {
-        $this->model = D('AuthCate');
-        self::_delcate('auth');
-    }
-
-    /*
-     * 删除管理员
-     * @author kevin.liu
-     * @time 2015-12-08
-     */
-    public function adminuserdel()
-    {
-        $this->model = D('Admin');
-        $id = I('get.id',0,'intval');
-        if($id == C('ADMINISTRATOR')){
-            $this -> error('系统账号无法删除');
-        }
-        if($id == UID){
-            $this -> error('自己无法删除自己');
-        }
-        self::_del('user');
-    }
 }

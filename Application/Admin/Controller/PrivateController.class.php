@@ -25,7 +25,7 @@ class PrivateController extends Controller
     public function _initialize()
     {
         // 表单验证，防止重复提交
-        if(formCheckToken()){
+        if(!formCheckToken()){
             $this->error("禁止重复提交表单！");
         }
         //获取到当前用户所属所有分组拥有的权限id  数组形式
@@ -81,7 +81,8 @@ class PrivateController extends Controller
         if ($str == false) {
             //调用getOneField方法传参格式getOneField('字段','条件（数组）','指定条数或者true如果只查询一条就为空')
             $where = array(
-                'status' => 1
+                'status' => 1,
+                'rules'  => array('neq','')
             );
             if ($uid != C('ADMINISTRATOR')) {
                 //如果为普通管理员查看当前用户的数据
@@ -97,6 +98,7 @@ class PrivateController extends Controller
             }
 
             $list = M('group')->where($where)->getField('rules', true);
+
             if (empty($list[0])) {
                 $this->error('访问权限不足');
             }
@@ -247,82 +249,11 @@ class PrivateController extends Controller
         die();
     }
 
-
-    /**
-     * isBbutton 控制页面添加按钮是否显示
-     * @param string $title 弹出框标题
-     * @param string $url 跳转地址
-     * @param int $type 跳转类型: 1为弹出层 2为新窗口打开
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    protected function isBut($but = array())
+    public function showAjax($msg='',$code=200)
     {
-        $dataArr = array();
-        foreach ($but as $Key => $value) {
-            if (self::_is_check_url($value['url'])) {
-                if (!empty($value['parameter'])) {
-                    $url = U($value['url'], $value['parameter']);
-                } else {
-                    $url = U($value['url']);
-                }
-                $title = $value['title'];
-                if ($value['type'] == 1) {
-                    $href = 'JavaScript:;';
-                    $target = 'popDialog';
-                    $dataOpt = "{title:'" . "$title',url:'" . "$url'" . '}';
-                } else {
-                    $href = $url;
-                    $target = '';
-                    $dataOpt = '';
-                }
-                $dataArr[] = array(
-                    'href'    => $href,
-                    'target'  => $target,
-                    'dataopt' => array(
-                        'data-opt' => $dataOpt,
-                        'content'  => $value['name']
-                    )
-                );
-            }
-        }
-        $this->assign('editTag', $dataArr);
+        $data = array('code'=>$code,'message'=>$msg);
+        $this->ajaxReturn($data,'json');
     }
-
-    /**
-     * isBbutton 控制分组页面按钮类型
-     * @param string $title 弹出框标题
-     * @param string $url 跳转地址
-     * @param int $type 跳转类型: 1为添加 2为其他
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    protected function _catebut($url, $title, $id = 0, $msg = '', $type = 1)
-    {
-        $res = self::_is_check_url($url, 1);
-        if ($res) {
-            if ($id != 0) {
-                $where = array(
-                    'id' => $id
-                );
-                $url = U($url, $where);
-            } else {
-                $url = U($url);
-            }
-            if ($type == 1) {
-                $butArr = array(
-                    'data-opt' => "{title:'" . "$title',url:'" . "$url'" . '}',
-                    'title'    => '添 加',
-                );
-            } else {
-                $butArr = array(
-                    'data-opt' => "{title:'" . "$title',url:'" . "$url',msg:'" . "$msg'" . '}',
-                    'title'    => '删 除',
-                );
-            }
-        }
-        return $butArr;
-    }
-
-
 
     /**
      * 分类列表

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="Admin@Public:top"/>
+    <title>{$top_nav}</title>
+</head>
+<body>
+
+    <div class="panel admin-panel">
+        <div class="panel-head tips"><strong>[上级菜单]</strong> <button class="button bg-green button-little">{$parent.title}</button></div>
+        <div class="padding border-bottom">
+            <input type="button" class="button button-small checkall" name="checkall" checkfor="id" value="全选" />
+            <a href="__CONTROLLER__/addsonmenu/id/{$parent.id}" class="button button-small border-blue">添加菜单</a>
+            <input type="button" class="button button-small border-red" value="批量删除" />
+            <a class="button border-green button-small" href="__CONTROLLER__/navlists">返回</a>
+        </div>
+        <table class="table table-hover txt_center">
+            <tr>
+                <th width="80">选框</th>
+                <th width="120">id</th>
+                <th width="*">菜单名</th>
+                <th width="*">规则</th>
+                <th width="180">排序</th>
+                <th width="280">操作</th>
+            </tr>
+
+            <volist name="son_cate" id="son">
+            <tr>
+                <td><input type="checkbox" name="id" value="{$son.id}" /></td>
+                <td>{$son.id}</td>
+                <td>{$son.title}</td>
+                <td>{$son.name}</td>
+                <td><input type="number" class="input set_sort" data-id="{$son.id}" placeholder="排序" value="{$son.sort}" style="width: 60px;text-align: center;margin: 0 auto;"/></td>
+                <td>
+                    <a class="button border-green button-little" href="__CONTROLLER__/editsonmenu/id/{$son.id}">修改菜单</a>
+                    <a class="button border-red button-little" href="javascript:;" data-url="__CONTROLLER__/delmenu/id/{$son.id}" onclick="sure_del(this)">删除菜单</a>
+                </td>
+            </tr>
+            </volist>
+
+
+         </table>
+    </div>
+<br />
+    <script>
+        function sure_del(obj){
+            var url = $(obj).data('url');
+            confirm("确认删除么？","",function(isConfirm){
+                if(isConfirm){
+                    window.location.href = url;
+                }
+            });
+            window.location.href = url;
+        }
+
+        $('.set_sort').blur(function(){
+            var id = $(this).data('id');
+            var sort = $(this).val();
+            var url = "__CONTROLLER__/menusort";
+            $.post(url,{'id':id,'sort':sort},function(data){
+                shopShortTip(".tips",data.message);
+            },'json');
+        });
+    </script>
+</body>
+</html>

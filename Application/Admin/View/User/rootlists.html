@@ -37,7 +37,7 @@
                 <td style="text-align: center">
                     <a class="button border-yellow button-little" href="#" >分配属组</a>
                     <span class="button border-blue button-little dialogs" data-url="__CONTROLLER__/addroot/id/{$row.id}" data-toggle="click"  data-mask="1" data-width="45%">修改</span>
-                    <a class="button border-red button-little" href="#" onclick="{if(confirm('确认删除?')){return true;}return false;}">删除</a>
+                    <a class="button border-red button-little" href="javascript:;" onclick="del_root({$row['id']})">删除</a>
                 </td>
             </tr>
             </volist>
@@ -58,6 +58,16 @@
 </form>
 <br />
 
-
+<script>
+    function del_root(id){
+        var url ="__CONTROLLER__/delroot";
+        url = url + "/id/"+id;
+        confirm("确定要删除么？",'',function(isSure){
+            if(isSure){
+                window.location.href = url;
+            }
+        })
+    }
+</script>
 </body>
 </html>

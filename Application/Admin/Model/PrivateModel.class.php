@@ -118,7 +118,7 @@ class PrivateModel extends Model
      */
     public function _modelFind($where, $field = '*')
     {
-        $info = $this->model->where($where)->field($field)->find();
+        $info = $this->where($where)->field($field)->find();
         return $info;
     }
 

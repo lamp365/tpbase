@@ -7,11 +7,14 @@ namespace Admin\Controller;
 
 class UserController extends PrivateController
 {
+    ///////////////////普通会员操作/////////////////
     public function userlists()
     {
         ppd('还没有哟过户');
     }
 
+
+    ///////////////////////管理员操作///////////////////////
     public function rootlists()
     {
         $adminModel = D('Admin');
@@ -68,5 +71,26 @@ class UserController extends PrivateController
         }
         $this->assign('admin',$admin);
         $this->display();
+    }
+
+
+    //删除管理员
+    public function delroot()
+    {
+        $model = D('Admin');
+        $id = I('get.id',0,'intval');
+        if($id == C('ADMINISTRATOR')){
+            $this -> error('系统账号无法删除');
+        }
+        if($id == UID){
+            $this -> error('自己无法删除自己');
+        }
+
+        $res = $model->_modelDelete(array("id"=>$id));
+        if($res){
+            $this->success("删除成功！");
+        }else{
+            $this->error($model->getError());
+        }
     }
 }

@@ -48,21 +48,7 @@ function checkcode($code,$verifyName='code'){
     return session($verifyName) == MD5($str);
 }
 
-function checkMenuIsOn($url,$type = 'left')
-{
-    $curent = MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
-    if ($type == 'left') {
-        if ($url == $curent) {
-            return true;
-        }
-    }
-    if ($type == 'top') {
-        if ($url == MODULE_NAME) {
-            return true;
-        }
-    }
-    return false;
-}
+
 
 /**
  * 跳转到登陆
