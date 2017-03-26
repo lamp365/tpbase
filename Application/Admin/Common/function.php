@@ -96,6 +96,26 @@ function getAdminGroup($uid){
         return '';
     }
 }
+
+/**
+ * 获取数据库大小
+ * @return string
+ */
+function _mysql_db_size()
+{
+    $sql = "SHOW TABLE STATUS FROM ".C('DB_NAME');
+    $tblPrefix = C('DB_PREFIX');
+    if($tblPrefix != null) {
+        $sql .= " LIKE '{$tblPrefix}%'";
+    }
+    $row = M()->query($sql);
+    $size = 0;
+    foreach($row as $value) {
+        $size += $value["data_length"] + $value["index_length"];
+    }
+    return tosize($size);
+}
+
 /**
  * 大小写转换
  * @param string $str 要转换的字符串

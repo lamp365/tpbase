@@ -46,6 +46,7 @@ function delTemp($dir = TEMP_PATH){
 /**
  * 表单验证，防止重复提交
  * @return bool
+ * @author kevin.liu
  */
 function formCheckToken(){
     if(C('TOKEN_ON')){
@@ -81,6 +82,7 @@ function formCheckToken(){
  * @param int $level
  * @param string $html
  * @return array
+ * @author kevin.liu
  */
 function catTree(&$list,$pid=0,$level=1,$html='--'){
     static $tree = array();
@@ -100,6 +102,7 @@ function catTree(&$list,$pid=0,$level=1,$html='--'){
  * @param $data  分类数据
  * @param int $pid
  * @param int $level
+ * @author kevin.liu
  */
 function catTree2(&$list,$data, $pid = 0, $level = 1)
 {
@@ -114,6 +117,31 @@ function catTree2(&$list,$data, $pid = 0, $level = 1)
     }
 }
 
+/**
+ * 获取大小单位换算
+ * @param $size
+ * @return string
+ * @author kevin.liu
+ */
+function tosize($size) {
+    $kb = 1024; // 1KB（Kibibyte，千字节）=1024B，
+    $mb = 1024 * $kb; //1MB（Mebibyte，兆字节，简称“兆”）=1024KB，
+    $gb = 1024 * $mb; // 1GB（Gigabyte，吉字节，又称“千兆”）=1024MB，
+    $tb = 1024 * $gb; // 1TB（Terabyte，万亿字节，太字节）=1024GB，
+
+    if ($size < $kb) {
+        return $size . " B";
+    } else if ($size < $mb) {
+        return round($size / $kb, 2) . " KB";
+    } else if ($size < $gb) {
+        return round($size / $mb, 2) . " MB";
+    } else if ($size < $tb) {
+        return round($size / $gb, 2) . " GB";
+    } else {
+        return round($size / $tb, 2) . " TB";
+    }
+
+}
 /**
  * 将key相同的数组合并为新的数组
  * @param array $arr 接收要组装的二维数组
