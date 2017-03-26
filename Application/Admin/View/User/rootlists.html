@@ -30,7 +30,7 @@
                 <td style="text-align: center">{$row.username}</td>
                 <td style="text-align: center">{$row.name}</td>
                 <td style="text-align: center">{$row.phone}</td>
-                <td style="text-align: center">管理员</td>
+                <td style="text-align: center">{$row.id|getAdminGroup=###}</td>
                 <td style="text-align: center">{$row.login_num}</td>
                 <td style="text-align: center">{$row.last_time|formatTime=###,2}</td>
                 <td style="text-align: center">{$row.last_ip}</td>

@@ -59,9 +59,34 @@ function skip_login(){
     header("location:{$url}");
 }
 
+/**
+ * 坚持规则是否可以被选中
+ * @param $id
+ * @param $rule_idArr
+ * @return string
+ */
 function ruleIsCheck($id,$rule_idArr){
     if(in_array($id,$rule_idArr)){
         return 'checked';
+    }else{
+        return '';
+    }
+}
+
+/**
+ * 获取管理员所属组
+ * @param $uid
+ * @return string
+ */
+function getAdminGroup($uid){
+    if(empty($uid)){
+        return '';
+    }
+    $group = D("GroupAccess")->_modelFind("uid={$uid}");
+    if(!empty($group)){
+        $group_id = $group['group_id'];
+        $info = D("Group")->_modelFind("id={$group_id}",'title');
+        return $info['title'];
     }else{
         return '';
     }
