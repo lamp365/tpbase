@@ -36,11 +36,6 @@ class AdminMenuService extends Model{
             'system_mange' =>       //系统管理
                 array(
                     array(
-                        'name' => '微信管理',
-                        'icon' => 'icon-home',
-                        'url'  => 'Admin/Weixin'
-                    ),
-                    array(
                         'name' => '网站配置',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Config'
@@ -49,6 +44,11 @@ class AdminMenuService extends Model{
                         'name' => '菜单管理',
                         'icon' => 'icon-home',
                         'url'  => 'Admin/Menus'
+                    ),
+                    array(
+                        'name' => '微信管理',
+                        'icon' => 'icon-home',
+                        'url'  => 'Admin/Weixin'
                     ),
                     array(
                         'name' => '数据管理',

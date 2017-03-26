@@ -93,8 +93,9 @@ class PrivateController extends Controller
                 if (empty($group)) {
                     $this->error('访问权限不足');
                 }
+                $group_str = implode(",",$group);
                 //可以属于多个组
-                $where['id'] = array('in', $group);
+                $where['id'] = array('in', $group_str);
             }
 
             $list = M('group')->where($where)->getField('rules', true);
@@ -175,13 +176,12 @@ class PrivateController extends Controller
      * @param bool $type 是否退出 0是 1否
      * @return bool 成功返回true 否则跳转到登录页面
      */
-    protected function _is_check_url($url)
+    protected function _is_check_url($action)
     {
         if (UID == C('ADMINISTRATOR')) {
             return true;
         }
-        $url = strtolower($url);
-        $url = MODULE_NAME . '/' . CONTROLLER_NAME . '/' . $url;
+        $url = MODULE_NAME . '/' . CONTROLLER_NAME . '/' . $action;
         $where = array(
             'name'   => $url,
             'status' => 1
@@ -249,96 +249,15 @@ class PrivateController extends Controller
         die();
     }
 
+    /**
+     * 用于同意数据格式  返回ajax请求
+     * @param string $msg
+     * @param int $code
+     */
     public function showAjax($msg='',$code=200)
     {
         $data = array('code'=>$code,'message'=>$msg);
         $this->ajaxReturn($data,'json');
-    }
-
-    /**
-     * 分类列表
-     * @param string $model 要操作的表
-     * @param string $cache 缓存名称
-     * @author kevin.liu<www.dayblog.cn>
-     * @time 2016-01-21
-     **/
-    public function _cateList($model, $title, $sort = '', $cache = '')
-    {
-        $list = S($cache . UID);
-        if ($list == false) {
-            $this->model = D($model);
-            $where = array(
-                'status' => 1
-            );
-            $list = self::_modelSelect($where, $sort);
-            if (!$list) {
-                $list = array();
-            }
-            $arr = array(
-                'id'       => 0,
-                'pid'      => null,
-                'title'    => $title,
-                'isParent' => true,
-                'open'     => true,
-            );
-            array_unshift($list, $arr);
-            $list = json_encode($list);
-            S($cache . UID, $list);
-        }
-        $this->assign('list', $list);
-    }
-
-    /**
-     * 列表右边操作按钮
-     * 数组里第二个参数为跳转类型参数
-     * type 1弹出层 2删除 3审核 4直接打开
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    protected function _listBut($data)
-    {
-        $dataArr = array();
-        foreach ($data as $key => $value) {
-            if (self::_is_check_url($value[3])) {
-                $dataArr[$key]['name'] = $value[0];
-                $dataArr[$key]['opt']['title'] = $value[2];
-                $dataArr[$key]['opt']['url'] = $value[4];
-                switch ($value[1]) {
-                    case 1://弹出层
-                        $dataArr[$key]['target'] = 'popDialog';
-                        break;
-                    case 2:
-                        $dataArr[$key]['opt']['msg'] = $value[5];
-                        $dataArr[$key]['target'] = 'ajaxDel';
-                        break;
-                    case 3:
-                        $dataArr[$key]['opt']['msg'] = $value[5];
-                        $dataArr[$key]['target'] = 'ajaxTodo';
-                        $dataArr[$key]['opt']['value'] = $value[7];
-                        $dataArr[$key]['opt']['type'] = $value[6];
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
-        return $dataArr;
-    }
-
-    /**
-     * 删除分类
-     * @author kevin.liu<www.dayblog.cn>
-     **/
-    protected function _delcate($url)
-    {
-        if (!$this->model) {
-            $this->error("表名未定义");
-        }
-        $res = $this->model->delcate();
-        if ($res) {
-            $this->success('操作成功', U($url));
-        }
-        $this->error($this->model->getError());
     }
 
 }

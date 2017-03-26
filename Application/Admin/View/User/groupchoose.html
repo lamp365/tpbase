@@ -1,0 +1,24 @@
+<div class="dialog">
+    <div class="dialog-head">
+        <span class="close rotate-hover"></span><strong>分配属组</strong>
+        <button class="button bg-yellow button-little">{$admin}</button>
+    </div>
+    <form action="__CONTROLLER__/groupchoose" method="post" class="one_main">
+    <div class="dialog-body">
+        <volist name="group_arr" id="row">
+            <label style="margin-right: 8px;">
+                <input name="group_ids[]" type="checkbox" value="{$row.id}" <in name="row.id" value="$group_id_str">checked</in> > {$row.title}
+            </label>
+        </volist>
+
+    </div>
+
+    <div class="dialog-foot">
+        <button class="button dialog-close">取消</button>
+        <input type="hidden" name="uid" value="{$Think.get.id}">
+        <button class="button bg-green" type="submit">确认</button>
+    </div>
+    {__TOKEN__}
+    </form>
+
+</div>

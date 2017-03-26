@@ -82,11 +82,16 @@ function getAdminGroup($uid){
     if(empty($uid)){
         return '';
     }
-    $group = D("GroupAccess")->_modelFind("uid={$uid}");
+    $group = D("GroupAccess")->where("uid={$uid}")->getField('group_id',true);
     if(!empty($group)){
-        $group_id = $group['group_id'];
-        $info = D("Group")->_modelFind("id={$group_id}",'title');
-        return $info['title'];
+        $group_id = implode(',',$group);
+        $where['id'] = array("in",$group_id);
+        $info_title  = D("Group")->where($where)->getField('title',true);
+        $html = '';
+        foreach($info_title as $title){
+            $html .= "<span class='button button-little bg-yellow'>{$title}</span> ";
+        }
+        return $html;
     }else{
         return '';
     }

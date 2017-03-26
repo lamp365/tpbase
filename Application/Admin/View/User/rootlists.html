@@ -16,11 +16,10 @@
                 <th width="45" style="text-align: center">序</th>
                 <th width="100" style="text-align: center">用户名</th>
                 <th width="120" style="text-align: center">姓名</th>
-                <th width="*" style="text-align: center">联系电话</th>
-                <th width="150" style="text-align: center">对应属组</th>
+                <th width="150" style="text-align: center">联系电话</th>
+                <th  style="min-width:200px;text-align: center">对应属组</th>
                 <th width="130" style="text-align: center">登录次数</th>
                 <th width="190" style="text-align: center">最后时间</th>
-                <th width="150" style="text-align: center">最后ip</th>
                 <th width="300" style="text-align: center">操作</th>
             </tr>
 
@@ -33,10 +32,9 @@
                 <td style="text-align: center">{$row.id|getAdminGroup=###}</td>
                 <td style="text-align: center">{$row.login_num}</td>
                 <td style="text-align: center">{$row.last_time|formatTime=###,2}</td>
-                <td style="text-align: center">{$row.last_ip}</td>
                 <td style="text-align: center">
-                    <a class="button border-yellow button-little" href="#" >分配属组</a>
-                    <span class="button border-blue button-little dialogs" data-url="__CONTROLLER__/addroot/id/{$row.id}" data-toggle="click"  data-mask="1" data-width="45%">修改</span>
+                    <a href="javascript:;" class="button border-blue button-little dialogs" data-url="__CONTROLLER__/groupchoose/id/{$row.id}" data-toggle="click"  data-mask="1"  data-width="45%">分配属组</a>
+                    <a href="javascript:;" class="button border-green button-little dialogs" data-url="__CONTROLLER__/addroot/id/{$row.id}" data-toggle="click"  data-mask="1" data-width="45%">修改</a>
                     <a class="button border-red button-little" href="javascript:;" onclick="del_root({$row['id']})">删除</a>
                 </td>
             </tr>

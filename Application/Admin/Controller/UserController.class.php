@@ -10,7 +10,7 @@ class UserController extends PrivateController
     ///////////////////普通会员操作/////////////////
     public function userlists()
     {
-        ppd('还没有哟过户');
+        ppd('还没有用户哦！');
     }
 
 
@@ -92,5 +92,41 @@ class UserController extends PrivateController
         }else{
             $this->error($model->getError());
         }
+    }
+
+    //分配属组
+    public function groupchoose()
+    {
+        if(IS_POST){
+            $uid = I('post.uid');
+            $model = D('GroupAccess');
+            $res   = $model->_modelDelete("uid={$uid}");
+            $group_ids = I('post.group_ids');
+            if(!empty($group_ids)){
+                foreach($group_ids as $id){
+                    $data = array('uid'=>$uid,'group_id'=>$id);
+                    $model->add($data);
+                }
+            }
+            $this->success('操作成功！');
+        }
+
+        //该用户所属于的组
+        $id    = I('get.id',0);  //uid
+        $admin = D('Admin')->where("id={$id}")->getField('username');
+
+        $group_id_arr = D('GroupAccess')->where("uid={$id}")->getField('group_id',true);
+        $group_id_str = implode(',',$group_id_arr);
+        //总的组
+        $group_arr    = D('Group')->_modelSelect('status=1',"id,title",'sort desc');
+        $this->assign('group_id_str',$group_id_str);
+        $this->assign('group_arr',$group_arr);
+        $this->assign('admin',$admin);
+        $this->display();
+    }
+
+    public function level()
+    {
+        ppd('会员等级！');
     }
 }
