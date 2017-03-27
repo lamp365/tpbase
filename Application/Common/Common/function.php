@@ -142,6 +142,22 @@ function tosize($size) {
     }
 
 }
+
+/**
+ * 保存上次访问页面
+ */
+function tosavepagefrom()
+{
+    $key = MODULE_NAME.'_page_fromurl';
+    $url = rtrim(C('WEB_DOMAIN'),'/').'/'.$_SERVER['REQUEST_URI'];
+    session($key,$url);
+}
+function cleanpagefrom()
+{
+    $key = MODULE_NAME.'_page_fromurl';
+    session($key,null);
+}
+
 /**
  * 将key相同的数组合并为新的数组
  * @param array $arr 接收要组装的二维数组

@@ -87,7 +87,8 @@ class PrivateController extends Controller
                 );
                 $group = $userGroupId->where($map)->getField('group_id', true);
                 if (empty($group)) {
-                    $this->error('访问权限不足');
+                    //清除登录信息
+                    $this->error('您无权访问后台！',getU('Public/logout'));
                 }
                 $group_str = implode(",",$group);
                 //可以属于多个组
@@ -96,8 +97,9 @@ class PrivateController extends Controller
 
             $list = M('group')->where($where)->getField('rules', true);
 
-            if (empty($list[0])) {
-                $this->error('访问权限不足');
+            if (empty($list)) {
+                //清除登录信息
+                $this->error('您无权访问后台！',getU('Public/logout'));
             }
             $str     = implode(',', $list);
             $strArr  = explode(',', $str);
@@ -148,7 +150,16 @@ class PrivateController extends Controller
                         if(in_array($one_menu['url'],$cate_arr)){
                             $cate_id = $cate_arr_flip[$one_menu['url']];
                             //查找它的子分类
-                            $one_menu['son'] = M('auth_cate')->where("pid={$cate_id}")->field('name,title,id')->order('sort desc')->select();
+                            $this_son = M('auth_cate')->where("pid={$cate_id}")->field('name,title,id')->order('sort desc')->select();
+
+                            foreach($this_son as $this_key =>  $val_arr){
+                                //如果查出的子类，不在权限中则去除
+                                if(!in_array($val_arr['name'],$cate_arr)){
+                                    unset($this_son[$this_key]);
+                                }
+                            }
+
+                            $one_menu['son']     = $this_son;
 
                             $_leftMenu[$cate_id] = $one_menu;
                         }
@@ -161,6 +172,7 @@ class PrivateController extends Controller
                     }
                 }
             }
+
             S('admin_menu_url' . UID,$admin_menu_url);
         }
         $this->assign('admin_menu_url', $admin_menu_url);

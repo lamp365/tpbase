@@ -69,7 +69,7 @@ class AdminModel extends PrivateModel
         $res = $this->where($userWhere)->find();
 
         if($res){
-            $password = md5Encrypt(trim(I('post.username')), $res['id']);
+            $password = md5Encrypt(trim(I('post.password')), $res['id']);
             if($password != $res['password']){
                 $this->error = "密码输入有误！";
                 return false;
@@ -81,7 +81,6 @@ class AdminModel extends PrivateModel
             );
             $this->where($userWhere)->save($lastData);
             session(C('ADMIN_UID'), $res['id']);
-            session(C('USERNAME'), $res['name']);
             session('login_user', $res);
             return $res;
         }else{

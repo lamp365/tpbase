@@ -14,13 +14,6 @@ use Think\Controller;
 
 class PublicController extends Controller
 {
-	/**
-	 * ship 没有条件时跳转地址
-	 * @author kevin.liu(791845283@qq.com)
-	 **/
-	public function skip(){
-        skip_login();
-	}
     /**
      * success 执行成功返回json格式
      * @param $message 提示字符串
