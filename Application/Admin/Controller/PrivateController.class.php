@@ -30,11 +30,7 @@ class PrivateController extends Controller
         }
         //获取到当前用户所属所有分组拥有的权限id  数组形式
         $this->group_id = $this->_rules();
-        $UserName = session(C('USERNAME'));
-        //检测后台管理员昵称是否存在，如果不等于空或者0则获取配置文件里定义的name名字并分配给首页
-        if (!empty($UserName)) {
-            $this->assign('UserName', session(C('USERNAME')));
-        }
+
         //分配网站菜单
         $this->_admin_menu();
 

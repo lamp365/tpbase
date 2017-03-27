@@ -16,7 +16,7 @@
         <div class="panel">
             <div class="panel-head"><strong>个人信息</strong></div>
             <ul class="list-group">
-                <li><span class="icon-user"></span> 您好：admin！上次登陆时间：2018-03-15 18:09，上次登陆ip：128.97.45.8</li>
+                <li><span class="icon-user"></span> 您好：{$Think.session.login_user.username}！上次登陆时间：{$Think.session.login_user.last_time|date="Y-m-d H:i",###}，上次登陆ip：{$Think.session.login_user.last_ip}</li>
             </ul>
         </div><br/>
     </div>

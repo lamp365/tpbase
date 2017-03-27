@@ -55,6 +55,7 @@ function checkcode($code,$verifyName='code'){
  */
 function skip_login(){
     session(C('ADMIN_UID'), null);
+    session('login_user', null);
     $url = getU("Admin/Public/login");
     header("location:{$url}");
 }

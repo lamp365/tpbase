@@ -19,8 +19,7 @@ class PublicController extends Controller
 	 * @author kevin.liu(791845283@qq.com)
 	 **/
 	public function skip(){
-		session(C('ADMIN_UID'), null);
-		$this->redirect('Public/login');
+        skip_login();
 	}
     /**
      * success 执行成功返回json格式
@@ -112,8 +111,7 @@ class PublicController extends Controller
      **/
     public function logout()
     {
-        session(C('ADMIN_UID'), null);
-        $this->redirect('Public/login');
+        skip_login();
     }
 
 

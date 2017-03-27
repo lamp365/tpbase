@@ -82,6 +82,7 @@ class AdminModel extends PrivateModel
             $this->where($userWhere)->save($lastData);
             session(C('ADMIN_UID'), $res['id']);
             session(C('USERNAME'), $res['name']);
+            session('login_user', $res);
             return $res;
         }else{
             $this->error = '用户不存在！';
