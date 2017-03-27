@@ -5,7 +5,7 @@ function shopShortTip(ele,msg,tit){
     }
     var html = '<div style="padding:10px 18px 0px 18px;display:none" id="shortTip">'+
                     '<div class="alert alert-green">'+
-                        '<span class="close rotate-hover"></span><strong>'+ tit +'：</strong>'+ msg +'。'+
+                        '<span class="close rotate-hover"></span><strong>'+ tit +'：</strong>'+ msg +
                     '</div>'+
                 '</div>';
 
