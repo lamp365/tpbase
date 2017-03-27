@@ -37,3 +37,5 @@ form .form-group:last-child{padding-bottom:0;}
 
 .txt_center th,.txt_center td{text-align: center;  }
 .mb10{margin-bottom: 10px}
+
+span.dialog-close{cursor: pointer}
