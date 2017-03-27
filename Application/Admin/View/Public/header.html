@@ -11,11 +11,11 @@
             <ul class="nav nav-inline admin-nav">
                 <volist name="admin_menu_url" id="vo">
                     <li class="one_li">
-                        <a href="javascript:;" onclick="getLeftMenu(this)" class="{$vo.icon}">{$vo.name}</a>
+                        <a href="javascript:;" onclick="getLeftMenu(this)" class="{$vo.icon}"> {$vo.name}</a>
                         <ul>
                             <volist name="vo['son']"  id="one_son">
                                 <li class="active">
-                                    <a href="javascript:;" data-url="{:getU($one_son['url'].'/index')}" class="one_tit">{$one_son['name']}</a>
+                                    <a href="javascript:;" data-url="{:getU($one_son['url'].'/index')}" class=""><span class="{$one_son.icon}"></span> <span class="one_tit">{$one_son['name']}</span></a>
                                     <span class="icon-angle-double-down"></span>
                                 </li>
                                 <div class="group_ol">
@@ -37,7 +37,7 @@
         <div class="admin-bread">
             <span>您好，{$UserName}，欢迎您的光临。</span>
             <ul class="bread">
-                <li><a href="{:getU('Admin/index')}" class="icon-home"> 开始</a></li>
+                <li><a href="{:getU('Index/index')}" class="icon-home"> 开始</a></li>
                 <li class="show_navtoggle">后台主页</li>
             </ul>
         </div>

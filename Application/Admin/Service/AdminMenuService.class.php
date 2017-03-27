@@ -20,11 +20,11 @@ class AdminMenuService extends Model{
        return array(
            'system_mange' => array(
                                    'name' => '系统管理',
-                                   'icon' => 'icon-home'
+                                   'icon' => 'icon-gear'
                                ),
            'user_mange'   => array(
                                    'name' => '用户管理',
-                                   'icon' => 'icon-home'
+                                   'icon' => 'icon-user'
                              ),
 
        );
@@ -37,22 +37,22 @@ class AdminMenuService extends Model{
                 array(
                     array(
                         'name' => '网站配置',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-sitemap',
                         'url'  => 'Admin/Config'
                     ),
                     array(
                         'name' => '菜单管理',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-bars',
                         'url'  => 'Admin/Menus'
                     ),
                     array(
                         'name' => '微信管理',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-wechat',
                         'url'  => 'Admin/Weixin'
                     ),
                     array(
                         'name' => '数据管理',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-database',
                         'url'  => 'Admin/Database'
                     )
                 ),
@@ -60,12 +60,12 @@ class AdminMenuService extends Model{
                 array(
                     array(
                         'name' => '会员管理',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-user',
                         'url'  => 'Admin/User'
                     ),
                     array(
                         'name' => '权限管理',
-                        'icon' => 'icon-home',
+                        'icon' => 'icon-eye',
                         'url'  => 'Admin/Auth'
                     )
                 ),

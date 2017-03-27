@@ -18,7 +18,7 @@ form .form-group:last-child{padding-bottom:0;}
 .admin-nav .active a{background:#09c;color:#fff;border-radius:4px 4px 0 0;}
 .admin-nav .active ul{display:block;position:fixed;left:0;width:180px;margin-top:41px;}
 .admin-nav .active ul a{background:transparent;color:#333;border-radius:0;display: inline-block}
-.admin-nav .active .active span{float: right; margin-right: 15px;margin-top: 7px;}
+.admin-nav .active .active>span{float: right; margin-right: 15px;margin-top: 7px;}
 .admin-nav .active .active{background:#e6f2fb;border-top:solid 1px #b5cfd9;border-bottom:solid 1px #b5cfd9;cursor: pointer}
 .admin-nav ul ol{list-style: none;padding: 0px;margin: 0px;border-bottom: 1px solid #ffffff;}
 .admin-nav ul ol span:first-child{margin-right: 0px;display: none}
