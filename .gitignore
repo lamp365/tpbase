@@ -1,5 +1,5 @@
 .idea
 txt
-Application/Common/Conf/config.php
-Application/Runtime/*
-Database
+/Application/Common/Conf/config.php
+/Application/Runtime/*
+/Database

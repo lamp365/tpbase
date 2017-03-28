@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="Admin@Public:top"/>
+    <title>{$top_nav}</title>
+</head>
+<body>
+<form method="post">
+    <div class="panel admin-panel">
+        <div class="panel-head show_tip"><strong>{$top_nav}</strong></div>
+        <div class="padding border-bottom">
+            <a href="javascript:;" class="button button-small bg-red">批量删除</a>
+        </div>
+        <table class="table table-hover">
+            <tr>
+                <th width="45" style="text-align: center">序</th>
+                <th width="75" style="text-align: center">选择</th>
+                <th  style="text-align: center;min-width: 240px;">数据库名</th>
+                <th width="120" style="text-align: center">大小</th>
+                <th width="190" style="text-align: center">创建时间</th>
+                <th  style="min-width:250px;text-align: center">操作</th>
+            </tr>
+
+            <volist name="datalist" id="row" >
+            <tr>
+                <td style="text-align: center">{++$key}</td>
+                <td style="text-align: center"><input type="checkbox" value="{$row.name}"></td>
+                <td style="text-align: center">{$row.name}</td>
+                <td style="text-align: center">{$row.size|tosize=###}</td>
+                <td style="text-align: center">{$row.date} {$row.time}</td>
+
+                <td style="text-align: center">
+                    <span class="button border-yellow button-little huanyuan" onclick="huanyuan('{$row.name}')">恢复数据</span>
+                    <a class="button border-red button-little delsql" href="javascript:;" onclick="del_root('{$row.name.}')">删除数据</a>
+                </td>
+            </tr>
+            </volist>
+
+             </table>
+
+    </div>
+</form>
+<br />
+
+<script>
+    function del_root(name){
+        var url ="__CONTROLLER__/delsql";
+        confirm("确定要删除么？",'',function(isSure){
+            if(isSure){
+                $(".delsql").attr('disabled',true);
+                //按钮转圈圈
+
+                $.post(url,{'name':name},function(data){
+                    shopShortTip('.show_tip',data.msg);
+                    $(".delsql").attr('disabled',false);
+                },'json')
+            }
+        })
+    }
+
+    function huanyuan(name){
+        var url ="__CONTROLLER__/dopost";
+        confirm("确定要恢复数据么？",'',function(isSure){
+            $(".huanyuan").attr('disabled',true);
+            //按钮转圈圈
+
+            if(isSure){
+                $.post(url,{'name':name},function(data){
+                    shopShortTip('.show_tip',data.msg);
+                    $(".huanyuan").attr('disabled',false);
+                },'json')
+            }
+        })
+    }
+</script>
+</body>
+</html>
