@@ -31,6 +31,9 @@ class UserController extends PrivateController
         if(IS_POST){
             //修改密码
             if(I('post.old_password')){
+                if(session(C('ADMIN_UID')) != C('ADMINISTRATOR')){
+                    $this->error("只有管理员才可以操作！");
+                }
                 $adminModel = M('admin');
                 $admin = $adminModel->field('id,password')->find(I('post.id'));
                 if(empty($admin)){
