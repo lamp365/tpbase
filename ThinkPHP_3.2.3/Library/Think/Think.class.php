@@ -311,6 +311,13 @@ class Think {
         }
         // 包含异常页面模板
         $exceptionFile =  C('TMPL_EXCEPTION_FILE',null,THINK_PATH.'Tpl/think_exception.tpl');
+        if(!APP_DEBUG){
+            //如果已经关闭了 debug  不要显示错误信息  跳到另外友好的界面
+            $info = pathinfo($exceptionFile);
+            $dirname = $info['dirname'];
+            $exfile  = "product_".$info['basename'];
+            $exceptionFile = $dirname.'/'.$exfile;
+        }
         include $exceptionFile;
         exit;
     }

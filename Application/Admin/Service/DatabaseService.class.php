@@ -24,10 +24,10 @@ class DatabaseService extends Model{
         //获得所有表
         $list = $this -> tableArr();
 
-        $top_info =  "-- MySQL Database Backup Tool".PHP_EOL.PHP_EOL;
-        $top_info .= "-- 开发作者：kevin.liu dayblog.cn".PHP_EOL.PHP_EOL;
-        $top_info .= "-- 生成日期：" . date('Y-m-d H:i:s', time()) .PHP_EOL.PHP_EOL;
-        $top_info .= "--".PHP_EOL.PHP_EOL;
+        $top_info =  "--| MySQL Database Backup Tool".PHP_EOL.PHP_EOL;
+        $top_info .= "--| 开发作者：kevin.liu dayblog.cn".PHP_EOL.PHP_EOL;
+        $top_info .= "--| 生成日期：" . date('Y-m-d H:i:s', time()) .PHP_EOL.PHP_EOL;
+        $top_info .= "--|".PHP_EOL.PHP_EOL;
         $top_info .= "SET FOREIGN_KEY_CHECKS=0;".PHP_EOL;  //取消外键关联
 
         //读取创建表信息
@@ -79,6 +79,41 @@ class DatabaseService extends Model{
             $insert_sql .= ";".PHP_EOL.PHP_EOL;
         }
         return $insert_sql;
+    }
+
+    /**
+     * 数据库还原
+     * @param $tableArr
+     * @param $filename
+     * @return array
+     */
+    public function huanyuan($tableArr,$filename)
+    {
+        //先删除数据表
+        $tb = '';
+        foreach ($tableArr as $table) {
+            $tb .= "`$table`,";
+        }
+        $tb  = rtrim($tb,',');
+        $res = M()->execute("DROP TABLE $tb");
+        if (!$res) {
+            return array('code'=>'1002','msg'=>'删除表失败了!');
+        }
+
+        //执行SQL
+        $str = file_get_contents($filename);
+        //去除以上顶部的无用信息
+
+
+        $sql_arr = explode(';', $str);
+        foreach ($sql_arr as $one_sql) {
+            $res = M()->query($one_sql);
+            if (!$res) {
+                return array('code'=>'1002','msg'=>"还原失败：{$one_sql}");
+            }
+        }
+
+        return array('code'=>'200','msg'=>"还原成功！");
     }
 
     /**

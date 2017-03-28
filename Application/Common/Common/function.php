@@ -159,19 +159,28 @@ function cleanpagefrom()
 }
 
 /**
- * 将key相同的数组合并为新的数组
- * @param array $arr 接收要组装的二维数组
- * @author kevin.liu
- **/
-function arrAssembly($arr)
+ * 二维数组排序 按照某一个key
+ * @param $arr
+ * @param $field
+ * @param string $sort
+ * @return array
+ */
+function mulity_array_sort($arr,$field,$sort='desc')
 {
-    $arr_new = array();
-    foreach($arr as $item){
-        foreach($item as $key=>$val){
-            $arr_new[$key][] = $val;
-        }
+    $keysvalue = $new_array = array();
+    foreach ($arr as $k=>$v){
+        $keysvalue[$k] = $v[$field];
     }
-    return $arr_new;
+    if($sort == 'asc'){
+        asort($keysvalue);
+    }else{
+        arsort($keysvalue);
+    }
+    reset($keysvalue);
+    foreach ($keysvalue as $k=>$v){
+        $new_array[] = $arr[$k];
+    }
+    return $new_array;
 }
 
 /**

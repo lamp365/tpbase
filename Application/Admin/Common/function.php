@@ -136,77 +136,37 @@ function letterChange($str,$type=1)
  * @param string $module model所属模块
  * @param string $model model名字
  * @author kevin.liu
- * @time 2016-01-24
  **/
 function createModel($module,$model)
 {
-    $auth_verification = 0; //是否开启自动验证 1开启 0 不开启
-    $is_inherit = 0; //为0 时候不继承Public
-    $filename   ='./Application/'.$module.'/Model/'.$model."Model.class.php";
+    $model = ucfirst($model);
+    $model_arr = explode('_',$model);
+    if(count($model_arr) != 1){
+        $model = '';
+        foreach($model_arr as $word){
+            $model .= ucfirst($word);
+        }
+    }
+
+    $filename   = APP_PATH.$module.'/Model/'.$model."Model.class.php";
     if(file_exists($filename)){
-        return '存在';
+        return array('code'=>1002,'msg'=>'文件已经存在！');
     }
-    $str        = "<?php\r\n";
-    $str       .= 'namespace '.$module."\Model;\r\n";
-    if($is_inherit == 0){
-        $str   .= "use Think\Model;\r\n";
-        $str   .= 'class '.$model."Model extends Model\r\n{\r\n";
-    }else{
-        $str   .= 'class '.$model."Model extends PublicModel\r\n{\r\n";
-    }
-    $str   .= "\r\n";
-    if($auth_verification == 1){
-        $str   .= "    protected $_validate = array(\r\n";
-        $str   .= "        array('username', 'require', '帐号必须填写'),\r\n";
-        $str   .= "    );\r\n";
-    }
+    $str    = "<?php ".PHP_EOL;
+    $str   .= 'namespace '.$module."\\Model;".PHP_EOL;
+    $str   .= 'class '.$model."Model extends PrivateModel { ".PHP_EOL.PHP_EOL;
     $str   .= '}';
-    if (!$head=fopen($filename, "w+")) {//以读写的方式打开文件，将文件指针指向文件头并将文件大小截为零，如果文件不存在就自动创建
-        die("尝试打开文件[".$filename."]失败!请检查是否拥有足够的权限!创建过程终止!");
+
+    if (!$head = fopen($filename, "w+")) {//以读写的方式打开文件，将文件指针指向文件头并将文件大小截为零，如果文件不存在就自动创建
+        return array('code'=>1002,'msg'=>"尝试打开文件[{$filename}]失败!");
     }
-    if (fwrite($head,$str)==false) {//执行写入文件
+    if (fwrite($head,$str)==true) {//执行写入文件
         fclose($head);
+    }else{
+        return array('code'=>1002,'msg'=>'写入失败！');
     }
     fclose($head);
+    return array('code'=>200,'msg'=>'操作成功！');
 }
 
 
-/**
- * 创建表
- * @param string $tablename 表名
- * @author kevin.liu
- * @time 2016-01-26
- **/
-function createMysqlTable($tablename='test')
-{
-    $arr = array(array('id','int','10','1','NOT NULL','AUTO_INCREMENT'));
-    $dataArr = array();
-    foreach ($arr as $key => $value) {
-        
-        foreach ($value as $k => $v) {
-            switch ($k) {
-                case 0:
-                    $dataArr[] = '`'.$v.'`';
-                    break;
-                case 1:
-                    $dataArr[] = $v.'('.$value[2].')';
-                    break;
-                case 3:
-                    if($v == 1){
-                        $dataArr[] = 'PRIMARY KEY (`'.$value[0].'`)';
-                    }
-                    break;
-                case 5:
-                    $dataArr['auth_increment'] = $v;
-                    break;
-                default:
-                    # code...
-                    break;
-            }
-        }
-        
-        //print_r(implode(' ', $value));
-    }
-    echo '<pre>';
-    print_r(implode(' ', $dataArr));
-}
