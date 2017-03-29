@@ -216,7 +216,6 @@ class PrivateController extends Controller
      * 操作  success('操作成功',3000)  等待3秒 返回上一页
      * 操作  success('操作成功','url')  直接跳转到url
      * 操作  success('操作成功','url',3000)  等待3秒 直接跳转到url
-     * @time 2015-15-05
      **/
     public function success($message = '操作成功！', $url = 2000,$time = 2000)
     {

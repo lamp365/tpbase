@@ -20,7 +20,14 @@
         if(url){
             window.location.href = url;
         }else{
-            window.history.go(-1);
+            if(code == 200){
+                //成功的要刷新返回去的页面
+                window.history.back();
+            }else{
+                //错误的时候返回去，最好不要刷新页面
+                window.history.go(-1);
+            }
+
         }
     }
 
