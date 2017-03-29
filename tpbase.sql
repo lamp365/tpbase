@@ -103,7 +103,7 @@ INSERT INTO `a_auth_cate` (`id`, `title`, `level`, `module`, `controller`, `meth
 (40, '微信菜单', 2, 'Admin', 'Weixin', 'menu', 'Admin/Weixin/menu', 3, 0, '', 0, 1),
 (41, '自定义回复', 2, 'Admin', 'Weixin', 'replay', 'Admin/Weixin/replay', 3, 0, '', 0, 1),
 (42, '关注回复', 2, 'Admin', 'Weixin', 'guanzhu', 'Admin/Weixin/guanzhu', 3, 0, '', 0, 1),
-(43, '恢复数据', 2, 'Admin', 'Database', 'return', 'Admin/Database/return', 28, 0, '', 0, 1),
+(43, '恢复数据', 2, 'Admin', 'Database', 'return', 'Admin/Database/huanyuan', 28, 0, '', 0, 1),
 (44, '支付方式', 2, 'Admin', 'Payway', 'lists', 'Admin/Payway/lists', 2, 0, '', 0, 1),
 (45, '清除缓存', 2, 'Admin', 'Database', 'clcache', 'Admin/Database/clcache', 28, 0, '', 0, 1),
 (46, '查子菜单', 2, 'Admin', 'Auth', 'showson', 'Admin/Auth/showson', 37, 0, '', 0, 1),

@@ -17,17 +17,21 @@ class DatabaseService extends Model{
 
     /**
      * 获取表的信息并组装创建表的命令
+     * array $list 表数组
      * @author kevin.liu
      **/
-    public function createTable()
+    public function createTable($list = array())
     {
-        //获得所有表
-        $list = $this -> tableArr();
+        if(empty($list)){
+            //获得所有表
+            $list = $this -> tableArr();
+        }
 
-        $top_info =  "--| MySQL Database Backup Tool".PHP_EOL.PHP_EOL;
-        $top_info .= "--| 开发作者：kevin.liu dayblog.cn".PHP_EOL.PHP_EOL;
-        $top_info .= "--| 生成日期：" . date('Y-m-d H:i:s', time()) .PHP_EOL.PHP_EOL;
-        $top_info .= "--|".PHP_EOL.PHP_EOL;
+        $top_info = "/**".PHP_EOL;
+        $top_info .= "* MySQL Database Backup Tool".PHP_EOL.PHP_EOL;
+        $top_info .= "* 开发作者：kevin.liu dayblog.cn".PHP_EOL.PHP_EOL;
+        $top_info .= "* 生成日期：" . date('Y-m-d H:i:s', time()) .PHP_EOL;
+        $top_info .= "**/".PHP_EOL.PHP_EOL;
         $top_info .= "SET FOREIGN_KEY_CHECKS=0;".PHP_EOL;  //取消外键关联
 
         //读取创建表信息
@@ -39,7 +43,8 @@ class DatabaseService extends Model{
 
         foreach ($list as $table) {
             $table_info = M()->query("SHOW CREATE TABLE $table");
-            $create_table_sql = $table_info[0]['create table'];
+            $create_table_sql = "Drop table IF EXISTS `{$table}`;".PHP_EOL;
+            $create_table_sql .= $table_info[0]['create table'];
 
             $create_sql .= $create_table_sql;
             $create_sql .=";".PHP_EOL.PHP_EOL;
@@ -47,10 +52,17 @@ class DatabaseService extends Model{
         return $create_sql;
     }
 
-    //组装插入语句
-    public  function insertSql()
+    /**
+     * 组装插入语句
+     * @param array $list  表数组
+     * @return string
+     */
+    public  function insertSql($list = array())
     {
-        $list = $this -> tableArr();
+        if(empty($list)){
+            //获得所有表
+            $list = $this -> tableArr();
+        }
         //插入数据库
         $insert_sql = '';
         foreach ($list as $table) {
@@ -75,7 +87,7 @@ class DatabaseService extends Model{
                 $insert_sql .= "),".PHP_EOL;
             }
 
-            $insert_sql = mb_substr($insert_sql, 0, -3);
+            $insert_sql = mb_substr($insert_sql, 0, -2);
             $insert_sql .= ";".PHP_EOL.PHP_EOL;
         }
         return $insert_sql;
@@ -95,25 +107,27 @@ class DatabaseService extends Model{
             $tb .= "`$table`,";
         }
         $tb  = rtrim($tb,',');
-        $res = M()->execute("DROP TABLE $tb");
+        $res = M()->execute("DROP TABLE `{$tb}` IF EXISTS");
         if (!$res) {
-            return array('code'=>'1002','msg'=>'删除表失败了!');
+            $this->error = "删除{$tb}表失败了!";
+            return false;
         }
 
         //执行SQL
         $str = file_get_contents($filename);
         //去除以上顶部的无用信息
+        $preg   = '/(\/\*.*\*\/)/sU';
+        $newstr = preg_replace($preg,'',$str);
 
-
-        $sql_arr = explode(';', $str);
+        $sql_arr = explode(';', $newstr);
         foreach ($sql_arr as $one_sql) {
             $res = M()->query($one_sql);
             if (!$res) {
-                return array('code'=>'1002','msg'=>"还原失败：{$one_sql}");
+                $this->error = "还原失败：{$one_sql}";
+                return false;
             }
         }
-
-        return array('code'=>'200','msg'=>"还原成功！");
+        return true;
     }
 
     /**
@@ -132,4 +146,31 @@ class DatabaseService extends Model{
         }
         return $list;
     }
+
+    /**
+     * 检查备份目录 并得到当前要备份的sql名字
+     * @param $table_arr
+     * @return bool|string
+     */
+    public function checkDataDir($table_arr){
+        $dirname = './Database';
+        if(!is_dir($dirname)){
+            $dir = @mkdir($dirname, 0777, true);
+            if(!$dir){
+                $this->error = '创建文件失败！';
+                return false;
+            }
+        }
+
+        if(is_array($table_arr)){
+            $sqlfile = $dirname.'/'.date('YmdHis',time()).'.sql';
+        }else{
+            //如果是单个表的话 用表名命名
+            $sqlfile = $dirname.'/'.date('YmdHis',time())."_{$table_arr}.sql";
+        }
+
+        return $sqlfile;
+    }
+
+
 }

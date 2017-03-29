@@ -9,11 +9,13 @@
     <div class="panel admin-panel">
         <div class="panel-head show_tip"><strong>{$top_nav}</strong></div>
         <div class="padding border-bottom">
+            <input type="button" class="button button-small checkall" name="checkall" checkfor="id" value="全选" />
             <a href="javascript:;" class="button button-small bg-blue" onclick="backup_db()">备份数据</a>
         </div>
         <table class="table table-hover txt_center">
             <tr>
                 <th width="45">序</th>
+                <th width="80">选择</th>
                 <th width="260">表名</th>
                 <th width="140">引擎</th>
                 <th width="150">编码</th>
@@ -26,6 +28,7 @@
             <volist name="dataArr" id="row" >
             <tr>
                 <td>{++$key}</td>
+                <td><input type="checkbox" value="{$row.name}" class="check_table"></td>
                 <td>{$row.name}</td>
                 <td>{$row.engine}</td>
                 <td>{$row.collation}</td>
@@ -33,6 +36,7 @@
                 <td>{$row.comment}</td>
                 <td>{$row.create_time}</td>
                 <td>
+                    <span class="button border-main button-little" onclick="backup_db('{$row.name}')">备份数据</span>
                     <a href="javascript:;" class="button button-little border-blue" onclick="get_model('{$row.name}')">生成模型</a>
                 </td>
             </tr>
@@ -41,20 +45,62 @@
              </table>
     </div>
 </form>
-<br />
+
+<include file="Admin@Public:foot"/>
 
 <script>
-    function backup_db(id){
+    function backup_db(one){
         var url ="__CONTROLLER__/backup_db";
+        if(one){
+            var table = one;
+        }else{
+            var table = [];
+            $(".check_table").each(function(){
+                if(this.checked){
+                    table.push($(this).val());
+                }
+            });
+            if(table.length < 1){
+                alert('请选择要备份的数据库！');
+                return '';
+            }
+        }
+
+        var parame = {'table':table};
+
         confirm("确定要备份数据么？",'',function(isSure){
             if(isSure){
-                $.post(url,{},function(data){
+                alertLoder(1);
+                $.post(url,parame,function(data){
                     if(data.code == 200){
                         shopShortTip(".show_tip",data.message);
                     }else{
                         shopShortTip(".show_tip",data.message,'对不起');
                     }
+                    alertLoder(0);
                 })
+            }
+        })
+    }
+
+    $(".checkall").click(function(){
+        if($(this).val() == '全选'){
+            $(".check_table").prop('checked',true);
+            $(this).val('全否');
+        }else if($(this).val() == '全否'){
+            $(".check_table").prop('checked',false);
+            $(this).val('全选');
+        }
+
+    });
+
+    function get_model(table){
+        var url ="__CONTROLLER__/build_model";
+        $.post(url,{'table':table},function(data){
+            if(data.code == 200){
+                shopShortTip('.show_tip',data.message);
+            }else{
+                shopShortTip(".show_tip",data.message,'对不起');
             }
         })
     }

@@ -131,42 +131,4 @@ function letterChange($str,$type=1)
     }
 }
 
-/**
- * 创建model
- * @param string $module model所属模块
- * @param string $model model名字
- * @author kevin.liu
- **/
-function createModel($module,$model)
-{
-    $model = ucfirst($model);
-    $model_arr = explode('_',$model);
-    if(count($model_arr) != 1){
-        $model = '';
-        foreach($model_arr as $word){
-            $model .= ucfirst($word);
-        }
-    }
-
-    $filename   = APP_PATH.$module.'/Model/'.$model."Model.class.php";
-    if(file_exists($filename)){
-        return array('code'=>1002,'msg'=>'文件已经存在！');
-    }
-    $str    = "<?php ".PHP_EOL;
-    $str   .= 'namespace '.$module."\\Model;".PHP_EOL;
-    $str   .= 'class '.$model."Model extends PrivateModel { ".PHP_EOL.PHP_EOL;
-    $str   .= '}';
-
-    if (!$head = fopen($filename, "w+")) {//以读写的方式打开文件，将文件指针指向文件头并将文件大小截为零，如果文件不存在就自动创建
-        return array('code'=>1002,'msg'=>"尝试打开文件[{$filename}]失败!");
-    }
-    if (fwrite($head,$str)==true) {//执行写入文件
-        fclose($head);
-    }else{
-        return array('code'=>1002,'msg'=>'写入失败！');
-    }
-    fclose($head);
-    return array('code'=>200,'msg'=>'操作成功！');
-}
-
 
