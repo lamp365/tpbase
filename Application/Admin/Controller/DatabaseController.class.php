@@ -121,29 +121,17 @@ class DatabaseController extends PrivateController
         if(empty($sqlName)){
             $this->showAjax('参数有误！',1002);
         }
-        //解析是恢复单张表还是整站表
-        $sql_arr = explode('_', $sqlName);
-        if(count($sql_arr) == 1){
-            //整站表
-            $db_service = D('Database','Service');
-            $tableArr  = $db_service->tableArr();
-        }else{
-            $table = '';
-            foreach($sql_arr as $one){
-                $table .= $one.'_';
-            }
-            $tableArr   = array();
-            $tableArr[] = rtrim($table,'_');
-        }
-        $filename = "./Database/".$sqlName;
 
-        $result = $db_service->huanyuan($tableArr,$filename);
-        if($result['code'] == 200){
+        $filename = "./Database/".$sqlName;
+        $db_service = D('Database','Service');
+        $result = $db_service->huanyuan($filename);
+
+        if($result){
             $end_time = microtime(true);
             $diff_time = round($end_time-$begin_time,3);
-            $this->showAjax($result['msg']."共耗时:{$diff_time} ms");
+            $this->showAjax("数据已恢复，共耗时:{$diff_time} ms");
         }else{
-            $this->showAjax($result['msg'],1002);
+            $this->showAjax($db_service->getError(),1002);
         }
     }
 
@@ -153,11 +141,23 @@ class DatabaseController extends PrivateController
         if(empty($sqlName)){
             $this->showAjax('参数有误！',1002);
         }
-        $filename = "./Database/".$sqlName;
-        if(!file_exists($filename)){
-            $this->showAjax('sql文件已不存在！',1002);
+        //数组表示批量删除
+        if(is_array($sqlName)){
+            foreach($sqlName as $one_sql){
+                $filename = "./Database/".$one_sql;
+                if(!file_exists($filename)){
+                    $this->showAjax('sql文件不存在！',1002);
+                }
+                @unlink($filename);
+            }
+        }else{
+            $filename = "./Database/".$sqlName;
+            if(!file_exists($filename)){
+                $this->showAjax('sql文件不存在！',1002);
+            }
+            @unlink($filename);
         }
-        @unlink($filename);
+
         $this->showAjax('sql文件删除成功！');
     }
 

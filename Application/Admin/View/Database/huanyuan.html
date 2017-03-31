@@ -9,7 +9,8 @@
     <div class="panel admin-panel">
         <div class="panel-head show_tip"><strong>{$top_nav}</strong></div>
         <div class="padding border-bottom">
-            <a href="javascript:;" class="button button-small bg-red">批量删除</a>
+            <input type="button" class="button button-small checkall" name="checkall" checkfor="id" value="全选" />
+            <a href="javascript:;" class="button button-small bg-red" onclick="bat_delete()">批量删除</a>
         </div>
         <table class="table table-hover">
             <tr>
@@ -24,14 +25,14 @@
             <volist name="datalist" id="row" >
             <tr>
                 <td style="text-align: center">{++$key}</td>
-                <td style="text-align: center"><input type="checkbox" value="{$row.name}"></td>
+                <td style="text-align: center"><input type="checkbox" value="{$row.name}" class="check_table"></td>
                 <td style="text-align: center">{$row.name}</td>
                 <td style="text-align: center">{$row.size|tosize=###}</td>
                 <td style="text-align: center">{$row.date} {$row.time}</td>
 
                 <td style="text-align: center">
-                    <span class="button border-yellow button-little huanyuan" onclick="huanyuan('{$row.name}')">恢复数据</span>
-                    <a class="button border-red button-little delsql" href="javascript:;" onclick="del_root('{$row.name.}')">删除数据</a>
+                    <a  href="javascript:;" class="button border-yellow button-little huanyuan" onclick="huanyuan('{$row.name}')">恢复数据</a>
+                    <a class="button border-red button-little delsql" href="javascript:;" onclick="del_sql(this,'{$row.name}')">删除数据</a>
                 </td>
             </tr>
             </volist>
@@ -41,18 +42,20 @@
     </div>
 </form>
 <br />
-
+<include file="Admin@Public:foot"/>
 <script>
-    function del_root(name){
+    function del_sql(obj,name){
+        var _this = obj;
         var url ="__CONTROLLER__/delsql";
         confirm("确定要删除么？",'',function(isSure){
             if(isSure){
                 $(".delsql").attr('disabled',true);
-                //按钮转圈圈
-
                 $.post(url,{'name':name},function(data){
-                    shopShortTip('.show_tip',data.msg);
+                    shopShortTip('.show_tip',data.message);
                     $(".delsql").attr('disabled',false);
+                    if(data.code == 200){
+                        $(_this).parent().parent().remove();
+                    }
                 },'json')
             }
         })
@@ -61,14 +64,59 @@
     function huanyuan(name){
         var url ="__CONTROLLER__/dopost";
         confirm("确定要恢复数据么？",'',function(isSure){
-            $(".huanyuan").attr('disabled',true);
-            //按钮转圈圈
-
             if(isSure){
+                //按钮转圈圈
+                $(".huanyuan").attr('disabled',true);
+                alertLoder();
                 $.post(url,{'name':name},function(data){
-                    shopShortTip('.show_tip',data.msg);
+                    shopShortTip('.show_tip',data.message);
                     $(".huanyuan").attr('disabled',false);
-                },'json')
+                },'json');
+                alertLoder(0);
+            }
+        })
+    }
+
+    $(".checkall").click(function(){
+        if($(this).val() == '全选'){
+            $(".check_table").prop('checked',true);
+            $(this).val('全否');
+        }else if($(this).val() == '全否'){
+            $(".check_table").prop('checked',false);
+            $(this).val('全选');
+        }
+
+    });
+
+    function bat_delete(){
+        var url ="__CONTROLLER__/delsql";
+        var table = [];
+        $(".check_table").each(function(){
+            if(this.checked){
+                table.push($(this).val());
+            }
+        });
+        if(table.length < 1){
+            alert('请选择要删除的数据库！');
+            return '';
+        }
+
+        var parame = {'name':table};
+
+        confirm("确定要删除数据么？",'',function(isSure){
+            if(isSure){
+                $.post(url,parame,function(data){
+                    if(data.code == 200){
+                        shopShortTip(".show_tip",data.message);
+                        $('.check_table').each(function () {
+                            if(this.checked){
+                                $(this).parent().parent().remove();
+                            }
+                        });
+                    }else{
+                        shopShortTip(".show_tip",data.message,'对不起');
+                    }
+                })
             }
         })
     }

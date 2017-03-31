@@ -37,10 +37,6 @@ class DatabaseService extends Model{
         //读取创建表信息
         $create_sql = $top_info;
 
-        $db_name     = C('DB_NAME');
-        $create_sql .= "CREATE DATABASE IF NOT EXISTS `{$db_name}`;".PHP_EOL;
-        $create_sql .= "use `{$db_name}`;".PHP_EOL.PHP_EOL;
-
         foreach ($list as $table) {
             $table_info = M()->query("SHOW CREATE TABLE $table");
             $create_table_sql = "Drop table IF EXISTS `{$table}`;".PHP_EOL;
@@ -87,7 +83,7 @@ class DatabaseService extends Model{
                 $insert_sql .= "),".PHP_EOL;
             }
 
-            $insert_sql = mb_substr($insert_sql, 0, -2);
+            $insert_sql = mb_substr($insert_sql, 0, -3);
             $insert_sql .= ";".PHP_EOL.PHP_EOL;
         }
         return $insert_sql;
@@ -95,14 +91,13 @@ class DatabaseService extends Model{
 
     /**
      * 数据库还原
-     * @param $tableArr
      * @param $filename
      * @return array
      */
-    public function huanyuan($tableArr,$filename)
+    public function huanyuan($filename,$tableArr = array())
     {
-        //先删除数据表
-        $tb = '';
+        //先删除数据表   已经在sql 文件中写入删除的语句了 这里不用再次做删除工作
+       /* $tb = '';
         foreach ($tableArr as $table) {
             $tb .= "`$table`,";
         }
@@ -111,7 +106,7 @@ class DatabaseService extends Model{
         if (!$res) {
             $this->error = "删除{$tb}表失败了!";
             return false;
-        }
+        }*/
 
         //执行SQL
         $str = file_get_contents($filename);
@@ -120,12 +115,11 @@ class DatabaseService extends Model{
         $newstr = preg_replace($preg,'',$str);
 
         $sql_arr = explode(';', $newstr);
+        unset($sql_arr[0]);
+        array_pop($sql_arr);  //去掉最后一个空的
+        $model = M();
         foreach ($sql_arr as $one_sql) {
-            $res = M()->query($one_sql);
-            if (!$res) {
-                $this->error = "还原失败：{$one_sql}";
-                return false;
-            }
+            $model->execute(trim($one_sql));
         }
         return true;
     }
