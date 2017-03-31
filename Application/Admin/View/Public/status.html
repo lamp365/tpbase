@@ -56,6 +56,17 @@
         }, 1000);
     });
 
+    function keyDownSearch(e) {
+        // 兼容FF和IE和Opera
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            goUrl(url);
+            $(".BeAlert_confirm").click();
+        }
+    }
+    document.onkeydown=keyDownSearch;
+
 </script>
 </body>
 </html>
