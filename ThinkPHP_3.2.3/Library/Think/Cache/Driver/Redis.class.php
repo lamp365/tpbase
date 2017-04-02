@@ -42,6 +42,9 @@ class Redis extends Cache {
         $options['timeout'] === false ?
             $this->handler->$func($options['host'], $options['port']) :
             $this->handler->$func($options['host'], $options['port'], $options['timeout']);
+
+        if(!empty(C('REDIS_AUTH')))
+            $this->handler->auth(C('REDIS_AUTH'));
     }
 
     /**
