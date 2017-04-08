@@ -6,11 +6,10 @@
  * Time: 下午11:20
  */
 namespace Home\Controller;
-use Think\Controller;
 
-class IndexController extends Controller{
+class IndexController extends PrivateController{
 
     public function index(){
-        ppd("welcome about you");
+        $this->display();
     }
 }

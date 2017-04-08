@@ -3,56 +3,48 @@
         echo '{__NOLAYOUT__}';
     }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>生产环境系统发生错误</title>
-<style type="text/css">
-*{ padding: 0; margin: 0; }
-html{ overflow-y: scroll; }
-body{ background: #fff; font-family: '微软雅黑'; color: #333; font-size: 16px; }
-img{ border: 0; }
-.error{ padding: 24px 48px; }
-.face{ font-size: 100px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
-h1{ font-size: 32px; line-height: 48px; }
-.error .content{ padding-top: 10px}
-.error .info{ margin-bottom: 12px; }
-.error .info .title{ margin-bottom: 3px; }
-.error .info .title h3{ color: #000; font-weight: 700; font-size: 16px; }
-.error .info .text{ line-height: 24px; }
-.copyright{ padding: 12px 48px; color: #999; }
-.copyright a{ color: #000; text-decoration: none; }
-</style>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>这个.. 页面没有找到！！！</title>
+
+	<style type="text/css">
+		body{ margin:0; padding:0; background:#efefef; font-family:Georgia, Times, Verdana, Geneva, Arial, Helvetica, sans-serif; }
+		div#mother{ margin:140px auto auto; width:943px; height:572px; position:relative; }
+		div#errorBox{ background: url('./Public/Home/error404/404_bg.png') no-repeat top left; width:943px; height:572px; margin:auto; }
+		div#errorText{ color:#33416E; padding:230px 0 0 446px;font-weight: bolder; }
+		div#errorText p{ width:303px; font-size:14px; line-height:26px; }
+		div.link{ /*background:#f90;*/ height:50px; width:145px; float:left; }
+		div#home{ margin:20px 0 0 444px;background: url('./Public/Home/error404/return.png')}
+		div#contact{ margin:20px 0 0 25px;background: url('./Public/Home/error404/connect.png')}
+		h1{ font-size:40px; margin-bottom:35px; }
+	</style>
+
+
+
 </head>
 <body>
-<div class="error">
-<p class="face">:(</p>
-<h1><?php echo strip_tags($e['message']);?></h1>
-<div class="content">
-<?php if(isset($e['file'])) {?>
-	<div class="info">
-		<div class="title">
-			<h3>错误位置</h3>
+<div id="mother">
+	<div id="errorBox">
+		<div id="errorText">
+			<p>
+				似乎你所寻找的网页，已移动或丢失了。
+			<p>或者也许你只是键入，错误的一些东西。</p>
+			如果该资源很重要，请联系管理员。
+			</p>
+
+			<p>
+				火星不太安全呢，我用时光送你回地球。
+			</p>
 		</div>
-		<div class="text">
-			<p>FILE: <?php echo $e['file'] ;?> &#12288;LINE: <?php echo $e['line'];?></p>
-		</div>
+		<a href="./index.php" title="返回首页">
+			<div class="link" id="home"></div>
+		</a>
+		<a href="#" title="联系管理员">
+			<div class="link" id="contact"></div>
+		</a>
 	</div>
-<?php }?>
-<?php if(isset($e['trace'])) {?>
-	<div class="info">
-		<div class="title">
-			<h3>TRACE</h3>
-		</div>
-		<div class="text">
-			<p><?php echo nl2br($e['trace']);?></p>
-		</div>
-	</div>
-<?php }?>
-</div>
-</div>
-<div class="copyright">
-<p><a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a><sup><?php echo THINK_VERSION ?></sup> { Fast & Simple OOP PHP Framework } -- [ WE CAN DO IT JUST THINK ]</p>
 </div>
 </body>
 </html>

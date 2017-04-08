@@ -104,7 +104,7 @@ class PrivateController extends Controller
             $str     = implode(',', $list);
             $strArr  = explode(',', $str);
             $str_arr = array_unique($strArr);
-            S('group_rules' . $uid, $str_arr);
+            S('group_rules' . $uid, $str_arr,3600*24*15);
         }
         return $str_arr;
     }
@@ -257,7 +257,7 @@ class PrivateController extends Controller
     }
 
     /**
-     * 用于同意数据格式  返回ajax请求
+     * 用于统一数据格式  返回ajax请求
      * @param string $msg
      * @param int $code
      */

@@ -20,6 +20,9 @@ define('HTML_CACHE_ON',false);
 
 // 定义应用目录
 define('APP_PATH','./Application/');
+//自动加载
+require './vendor/autoload.php';
+
 // 引入ThinkPHP入口文件
 require './ThinkPHP_3.2.3/ThinkPHP.php';
 

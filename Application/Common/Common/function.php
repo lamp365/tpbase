@@ -118,6 +118,57 @@ function catTree2(&$list,$data, $pid = 0, $level = 1)
 }
 
 /**
+ * 防止快速刷新 恶意行为 我们认为当3秒内，刷页面超过8次，认为是恶意行为
+ * @param string $seconds  时间段[秒]
+ * @param int $refresh     刷新次数
+ */
+function checkXssQcc($seconds = '3',$refresh=10){
+    $cur_time = time();
+    if($data = session('xssQcc')){
+        $ip  = get_client_ip();
+        $key = 'forbiden_vist_'.$ip;
+        if(S($key) == $ip){   //静止三分钟访问
+            //跳转至攻击者服务器地址
+            header(sprintf('Location:%s', 'http://127.0.0.1'));
+            exit('Sorry,Access Denied');
+        }
+
+        $data = unserialize($data);
+        $data['refresh_times'] = $data['refresh_times'] + 1;
+
+        //处理监控结果
+        if($cur_time - $data['last_time'] < $seconds){
+            //3秒内 超过10次
+            if($data['refresh_times'] > $refresh){
+                //记录攻击者日志
+                set_history(0,2,'非法攻击！');
+                //并缓存三分钟不能访问
+                S($key,$ip,180);
+                //跳转至攻击者服务器地址
+                header(sprintf('Location:%s', 'http://127.0.0.1'));
+                exit('Sorry,Access Denied');
+            }
+        }else{
+            //超过3秒 重至
+            $data = array(
+                'refresh_times' => 1,
+                'last_time'     => $cur_time,
+            );
+        }
+
+        $new_data = serialize($data);
+        session('xssQcc',$new_data);
+    }else{
+        $data = array(
+            'refresh_times' => 1,
+            'last_time'     => $cur_time,
+        );
+
+        $new_data = serialize($data);
+        session('xssQcc',$new_data);
+    }
+}
+/**
  * 获取大小单位换算
  * @param $size
  * @return string
@@ -383,15 +434,20 @@ function ppd(){
 
 /**
  * @param $url
+ * @$route 是否是一个路由地址，是的话，则直接放回路由地址
  * @return string 返回一个绝对地址
  * getU('edit')   当前控制器下的edit
  * getU('User/edit')   当前model下 User控制器下的edit
  * getU('Home/User/edit')   当前Home模块下 User控制器下的edit
  */
-function getU($url){
-    $url_arr = explode('/',$url);
-    if(count($url_arr) == 2){
-        $url = MODULE_NAME."/".$url;
+function getU($url,$route=false){
+    if($route){
+        return C('WEB_DOMAIN').'/'.$url.'.'.C('URL_HTML_SUFFIX');
+    }else{
+        $url_arr = explode('/',$url);
+        if(count($url_arr) == 2){
+            $url = MODULE_NAME."/".$url;
+        }
+        return C('WEB_DOMAIN').U($url);
     }
-    return C('WEB_DOMAIN').U($url);
 }

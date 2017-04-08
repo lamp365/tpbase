@@ -18,7 +18,7 @@
         for($i = 0; $i<$code_len;$i++){
             $str = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
             $font_color = imagecolorallocate($image,mt_rand(0,156),mt_rand(0,156),mt_rand(0,156));
-            $codeStrs .= $codeStr = utf8_encode($str[mt_rand(0,strlen($str)-1)]);
+            $codeStrs .= $codeStr = $str[mt_rand(0,strlen($str)-1)];
 
             imagettftext($image,$font_size,mt_rand(-30,30),$x*$i+mt_rand(1,3),$height / 1.4,$font_color,$font,$codeStr);
         }
