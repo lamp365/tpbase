@@ -1,0 +1,14 @@
+{
+	"require":{
+		"aliyuncs/oss-sdk-php": "^2.2.2",
+	  	"flc/alidayu":"^2.0.5",
+	    "chronon/mobile_detect": "1.1.2",
+	    "curl/curl": "^1.5"
+	},
+	"repositories": {
+	    "packagist": {
+		"type": "composer",
+		"url": "https://packagist.phpcomposer.com"
+	    }
+	}
+}

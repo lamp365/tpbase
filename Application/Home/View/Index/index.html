@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天天博客</title>
+    <link rel="stylesheet" href="__LIBS__/beAlert/css/beAlert.css">
+
+    <script src="__SYSTEM__/js/jquery.js"></script>
+    <script src="__LIBS__/beAlert/js/beAlert.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .left{
+            float: left;
+            width: 47%;
+            height: 100%;
+            display: block;
+            background: url("__HOME__/index/images/index1.png") no-repeat;
+            background-size: 100% ;
+        }
+        .right{
+             float: right;
+             width: 53%;
+            height: 100%;
+            display: block;
+            background: url("__HOME__/index/images/index2.png") no-repeat;
+            background-size: 100%;
+         }
+    </style>
+</head>
+<body>
+    <div class="left"></div>
+    <div class="right"></div>
+</body>
+<script>
+    $(function(){
+        var w = document.documentElement.clientWidth;
+        var h = document.documentElement.clientHeight;
+        $('.left').css({'height':h});
+        $('.right').css({'height':h});
+
+        setTimeout(function(){
+            alert("欢迎您！",'登录个人中心吧',function(){
+               var url = "{:getU('signin',true)}";
+                window.location.href = url;
+            });
+        },1300)
+    });
+
+</script>
+</html>
